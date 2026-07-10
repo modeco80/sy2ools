@@ -14,6 +14,8 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(sy2Policies)
 include(sy2ProjectFuncs)
 
+option(LIBSLY_USE_OPENSSL "Use OpenSSL library for crypto." ON)
+
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
@@ -22,6 +24,7 @@ add_subdirectory(third_party/mcolib)
 
 # libsly libraries
 add_subdirectory(src/lib/core)
+add_subdirectory(src/lib/sly2)
 
 # command line tools
 add_subdirectory(src/tools/cli)

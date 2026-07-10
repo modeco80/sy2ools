@@ -5,6 +5,7 @@ add_executable(sly2_iso_pull_files
 sy2ools_target(sly2_iso_pull_files)
 target_link_libraries(sly2_iso_pull_files
 	libsly::core
+	libsly::sly2
 )
 
 add_executable(brxdecompress
