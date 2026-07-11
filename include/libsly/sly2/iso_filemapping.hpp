@@ -3,6 +3,14 @@
 
 namespace sly::sly2 {
 
+	// TODO: Fill this out
+	/// File kind. This directly maps to FK$ key codes.
+	enum class FileKind : u8 {
+		BrxMap = 'm',
+		IconMemcard = 'I',
+		PssMovie = 'Y',
+	};
+
 	struct NameMappingTableEntry {
 		enum class MappingKind : u32 {
 			Fid = 0,
@@ -23,10 +31,11 @@ namespace sly::sly2 {
 			};
 		};
 
+		FileKind fk;
 		const char* pszFileName;
 	};
 
-	struct ReleaseCdMappingTable {
+	struct ReleaseCdDataTable {
 		u32 lbaElfBase;
 		u32 offsetElfCdCatalog;
 		u32 countElfCdCatalog;
@@ -41,17 +50,17 @@ namespace sly::sly2 {
 #define BEGIN_NAME_MAPPING_TABLE(region, version) \
 	constexpr static NameMappingTableEntry sMappingTable_##region##_##version[] = {
 /// Add a by-FID mapping
-#define NAME_BY_FID(_fid, name) \
-	{ .kind = NameMappingTableEntry::MappingKind::Fid, .fid = _fid, .pszFileName = name }
+#define NAME_BY_FID(_fid, _fk, name) \
+	{ .kind = NameMappingTableEntry::MappingKind::Fid, .fid = _fid, .fk = _fk, .pszFileName = name }
 
-#define NAME_BY_LBA(_lba, _cb, name) \
-	{ .kind = NameMappingTableEntry::MappingKind::CdSector, .lbaStart = _lba, .size = _cb, .pszFileName = name }
+#define NAME_BY_LBA(_lba, _cb, _fk, name) \
+	{ .kind = NameMappingTableEntry::MappingKind::CdSector, .lbaStart = _lba, .size = _cb, .fk = _fk, .pszFileName = name }
 
 #define END_NAME_MAPPING_TABLE() \
 	}
 
 #define MAKE_RELEASE(region, version, _lbaElfBase, _offsetElfCdCatalog, _countElfCdCatalog, _lbaCdDataBase) \
-	constexpr static ReleaseCdMappingTable sCatalogEntry_##region##_##version = {                           \
+	constexpr static ReleaseCdDataTable sCatalogEntry_##region##_##version = {                           \
 		.lbaElfBase = _lbaElfBase,                                                                          \
 		.offsetElfCdCatalog = _offsetElfCdCatalog,                                                          \
 		.countElfCdCatalog = _countElfCdCatalog,                                                            \

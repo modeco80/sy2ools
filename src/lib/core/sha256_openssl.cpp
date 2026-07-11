@@ -75,12 +75,6 @@ namespace sly::core {
 		ShaDigest digest {};
 		EvpContext ctx;
 		ctx.digestInit(EVP_sha256());
-
-		// Calculate how many chunks it will take to tee the amount of bytes
-		// we have been requested to.
-		//
-		// Since it may not be evenly divisible into chunks,
-		// we also need to calculate the remainder
 		u64 nChunks = nDigest / kDigestStreamChunkSize;
 		u64 nRemainder = nDigest % kDigestStreamChunkSize;
 
@@ -90,8 +84,6 @@ namespace sly::core {
 			ctx.digestUpdate(&buffer[0], n);
 		}
 
-		// Once we've written all we can as chunks, we need to
-		// write the final remainder, if there is any.
 		if(nRemainder) {
 			auto n = stream.read(&buffer[0], nRemainder);
 			ctx.digestUpdate(&buffer[0], n);
