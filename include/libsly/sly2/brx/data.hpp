@@ -5,8 +5,8 @@
 
 namespace sly::sly2::brx {
 
+	/// All parsed BRX data laid out into a semi-competent struct.
 	struct BrxData {
-		// Brx data.
 		std::vector<ProxyTableEntry> proxyTable;
 	};
 

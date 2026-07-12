@@ -23,6 +23,15 @@ namespace sly::sly2::brx {
 		return item;
 	}
 
+	std::string readSwString(mco::Stream& stream) {
+		std::string ret;
+		const auto nLen = readLiteral<i16>(stream);
+
+		ret.resize(nLen);
+		readAll(stream, &ret[0], nLen);
+		return ret;
+	}
+
 	Parser::Parser(IArchiveFileSystem& fs, const char* pszFileName)
 		: fs(fs) {
 		// Open the raw file from the given archive implementation.

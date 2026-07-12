@@ -13,14 +13,23 @@ namespace sly::sly2 {
 			mco::Stream* brxRawStream;
 			std::unique_ptr<sly::core::SlyLzStream> brxStream;
 
-			// individual parse functions. These are private as the brx data is essentially
-			// individual types of data merged into one byte stream. Therefore, it makes no sense
-			// to parse *only* one type of data. Something which needs only one kind of data
+			// Parse functions.
+			//
+			// NOTE:
+			// These are private as the brx data is essentially individual types of data
+			// that is merged into a single compressed byte stream.
+			//
+			// Therefore, it makes no real sense to parse *only* one type of data.
+			//
+			// Something which needs only one kind of data
 			// can move out the data it wants out of the BrxData struct or only use that data.
+
 			bool parseProxyTable(BrxData& data);
 
 		   public:
+			// helper which opens from a IArchiveFileSystem instance
 			Parser(IArchiveFileSystem& fs, const char* pszFileName);
+			// TODO Parser(Stream& stream, CompressKind kind);
 			~Parser();
 
 			/// Parses all data out of the brx level..

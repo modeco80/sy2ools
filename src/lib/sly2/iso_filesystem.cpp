@@ -122,7 +122,7 @@ namespace sly::sly2 {
 
 		isoFile.seek(lbaToOffset(releaseData->lbaElfBase) + releaseData->offsetElfCdCatalog, mco::Stream::Begin);
 		if(isoFile.read(&cdCatalog[0], nCatalogBytes) != nCatalogBytes) {
-			throw std::runtime_error("Short read of CD root catalog. This should NEVER happen!");
+			throw std::runtime_error("Short read of ELF CD catalog. This should NEVER happen!");
 		}
 	}
 

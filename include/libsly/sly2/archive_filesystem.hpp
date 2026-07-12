@@ -6,6 +6,11 @@ namespace sly::sly2 {
 	using ArchiveKind = u8;
 	constexpr ArchiveKind DefaultArchiveKind = 0xff;
 
+	class FileInformation {
+	public:
+		std::string fileName;
+	};
+
 	/// Abstraction over archive files..
 	class IArchiveFileSystem {
 	   public:
