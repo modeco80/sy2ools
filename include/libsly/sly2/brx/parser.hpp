@@ -1,6 +1,6 @@
 #pragma once
-#include <libsly/sly2/archive_filesystem.hpp>
 #include <libsly/core/sly_lz_stream.hpp>
+#include <libsly/sly2/archive_filesystem.hpp>
 // Brx data.
 #include <libsly/sly2/brx/data.hpp>
 

@@ -1,33 +1,15 @@
 #pragma once
+#include <libsly/sly2/archive_filesystem.hpp>
+#include <libsly/sly2/iso_filesystem_types.hpp>
 #include <libsly/sly2/release.hpp>
 #include <mco/io/file_stream.hpp>
 #include <mco/io/stream.hpp>
 #include <vector>
-#include <libsly/sly2/archive_filesystem.hpp>
 
 namespace sly::sly2 {
 
 	using IsoFileId = u32;
 	struct ReleaseCdDataTable;
-
-	/// CD catalog entry. Exposed here since it is read in some other places.
-	struct CdCatalogEntry {
-		u32 lba;
-		u32 size;
-		u32 unk;
-		u8 unk2[40]; // TODO this could be interesting data
-		u32 lbaXorKey;
-		u32 unkXorKey;
-		u32 sizeXorKey;
-
-		u32 getSize() const {
-			return size ^ sizeXorKey;
-		}
-
-		u32 getLba() const {
-			return (lba ^ lbaXorKey);
-		}
-	};
 
 	/// This class manages opening files out of final builds of Sly 2.
 	/// Final builds of Sly 2 hard-bolt their files on the disc,

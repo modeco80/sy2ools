@@ -1,5 +1,6 @@
-#include <libsly/sly2/iso_filesystem.hpp>
 #include <libsly/sly2/brx/parser.hpp>
+#include <libsly/sly2/iso_filesystem.hpp>
+
 #include "libsly/sly2/brx/data.hpp"
 
 int main(int argc, char** argv) {
@@ -19,5 +20,4 @@ int main(int argc, char** argv) {
 
 	printf("parsed it!\n");
 	return 0;
-
 }

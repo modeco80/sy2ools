@@ -8,13 +8,15 @@ namespace sly::sly2 {
 
 	/// Abstraction over archive files..
 	class IArchiveFileSystem {
-	public:
+	   public:
 		virtual ~IArchiveFileSystem() = default;
 
 		/// Returns the kind of the archive. Any archive types which expose special behaviour
 		/// can override this so that clients can tell what type of IArchiveFileSystem they got
 		/// without RTTI. If no special behaviour is provided than you can just use this default implementation.
-		virtual ArchiveKind getKind() const { return DefaultArchiveKind; }
+		virtual ArchiveKind getKind() const {
+			return DefaultArchiveKind;
+		}
 
 		// TODO: API to enumerate through known files.
 
@@ -23,4 +25,4 @@ namespace sly::sly2 {
 		virtual void closeFile(mco::Stream* file) = 0;
 	};
 
-}
+} // namespace sly::sly2

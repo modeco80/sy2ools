@@ -60,7 +60,7 @@ namespace sly::sly2 {
 	}
 
 #define MAKE_RELEASE(region, version, _lbaElfBase, _offsetElfCdCatalog, _countElfCdCatalog, _lbaCdDataBase) \
-	constexpr static ReleaseCdDataTable sCatalogEntry_##region##_##version = {                           \
+	constexpr static ReleaseCdDataTable sCatalogEntry_##region##_##version = {                              \
 		.lbaElfBase = _lbaElfBase,                                                                          \
 		.offsetElfCdCatalog = _offsetElfCdCatalog,                                                          \
 		.countElfCdCatalog = _countElfCdCatalog,                                                            \

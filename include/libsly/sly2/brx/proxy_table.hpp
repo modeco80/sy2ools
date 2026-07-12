@@ -12,4 +12,4 @@ namespace sly::sly2::brx {
 		i32 unk5; // ?
 	};
 
-}
+} // namespace sly::sly2::brx

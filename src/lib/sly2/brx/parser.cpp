@@ -5,8 +5,10 @@ namespace sly::sly2::brx {
 	// IO helpers
 
 	class ShortRead : public std::exception {
-	public:
-		const char* what() const noexcept override { return "short read"; }
+	   public:
+		const char* what() const noexcept override {
+			return "short read";
+		}
 	};
 
 	void readAll(mco::Stream& stream, void* pBuf, usize count) {
@@ -14,7 +16,7 @@ namespace sly::sly2::brx {
 			throw ShortRead();
 	}
 
-	template<class T>
+	template <class T>
 	T readLiteral(mco::Stream& stream) {
 		T item;
 		readAll(stream, &item, sizeof(T));
@@ -68,4 +70,4 @@ namespace sly::sly2::brx {
 		return true;
 	}
 
-}
+} // namespace sly::sly2::brx
