@@ -162,6 +162,23 @@ namespace sly::sly2 {
 		return IsoFileSystem::Kind;
 	}
 
+	void IsoFileSystem::enumFiles(bool (*pcb)(const char* pszFileName, u32 size, void* user), void* user) const {
+		for(auto i = 0; i < releaseData->nameMapTableCount; ++i) {
+			const auto& mapent = releaseData->nameMapTable[i];
+			u32 size;
+
+			if(mapent.kind == NameMappingTableEntry::MappingKind::Fid) {
+				// need to reach the cd table to get the size for FID entries.
+				size = cdCatalog[mapent.fid].getSize();
+			} else if(mapent.kind == NameMappingTableEntry::MappingKind::CdSector) {
+				size = mapent.size;
+			}
+
+			if(!pcb(mapent.pszFileName, size, user))
+				return;
+		}
+	}
+
 	mco::Stream* IsoFileSystem::openFile(const char* pszName) {
 		// Look through the name mapping table, for a matching file name.
 		for(auto i = 0; i < releaseData->nameMapTableCount; ++i) {

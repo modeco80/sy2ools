@@ -46,6 +46,8 @@ namespace sly::sly2 {
 
 		ArchiveKind getKind() const override;
 
+		void enumFiles(bool (*pcb)(const char* pszFileName, u32 size, void* user), void* user) const override;
+
 		/// Opens a file by name. Name mapping table must be complete.
 		mco::Stream* openFile(const char* pszName) override;
 

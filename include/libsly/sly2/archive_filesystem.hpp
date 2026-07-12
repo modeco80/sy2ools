@@ -1,14 +1,15 @@
 #pragma once
 #include <mco/io/stream.hpp>
+#include <vector>
 
 namespace sly::sly2 {
 
 	using ArchiveKind = u8;
 	constexpr ArchiveKind DefaultArchiveKind = 0xff;
 
-	class FileInformation {
-	public:
+	struct FileInformation {
 		std::string fileName;
+		u32 fileSize;
 	};
 
 	/// Abstraction over archive files..
@@ -23,7 +24,18 @@ namespace sly::sly2 {
 			return DefaultArchiveKind;
 		}
 
-		// TODO: API to enumerate through known files.
+		/// Enumerates all files in the archive.
+		virtual void enumFiles(bool (*pcb)(const char* pszFileName, u32 size, void* user), void* user) const = 0;
+
+		template <class F>
+		void enumFilesLambda(F&& fun) const {
+			enumFiles([](const char* pszFileName, u32 size, void* user) -> bool {
+				return (*reinterpret_cast<F*>(user))(pszFileName, size);
+			},
+					  &fun);
+		}
+
+		std::vector<FileInformation> getFiles() const;
 
 		virtual mco::Stream* openFile(const char* pszName) = 0;
 

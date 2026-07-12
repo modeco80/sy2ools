@@ -21,5 +21,10 @@ int main(int argc, char** argv) {
 
 	printf("Detected %s\n", sly::sly2::getReleaseString(rel).c_str());
 
+	isofs.enumFilesLambda([](const char* pszFileName, u32 size) {
+		printf("%s %d\n", pszFileName, size);
+		return true;
+	});
+
 	return 0;
 }
