@@ -7,10 +7,10 @@ namespace sly::sly2 {
 	struct CdCatalogEntry {
 		u32 lba;
 		u32 size;
-		u32 unk;
-		u8 unk2[40]; // TODO this could be interesting data
+		u32 id;
+		u8 garbage[40];
 		u32 lbaXorKey;
-		u32 unkXorKey;
+		u32 idXorKey;
 		u32 sizeXorKey;
 
 		u32 getSize() const {
@@ -20,6 +20,12 @@ namespace sly::sly2 {
 		u32 getLba() const {
 			return (lba ^ lbaXorKey);
 		}
+
+		u32 getId() const {
+			return (id ^ idXorKey);
+		}
 	};
+
+	mcoAssertSize(CdCatalogEntry, 0x40);
 
 } // namespace sly::sly2
