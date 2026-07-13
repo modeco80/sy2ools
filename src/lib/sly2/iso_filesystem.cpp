@@ -188,7 +188,7 @@ namespace sly::sly2 {
 				if(mapent.kind == NameMappingTableEntry::MappingKind::Fid)
 					return openFileByFid(mapent.fid);
 				else if(mapent.kind == NameMappingTableEntry::MappingKind::CdSector)
-					return openFileByCdSector(mapent.lbaStart, mapent.size);
+					return openFileByCdSector(mapent.lbaStart + releaseData->lbaCdDataBase, mapent.size);
 			}
 		}
 
