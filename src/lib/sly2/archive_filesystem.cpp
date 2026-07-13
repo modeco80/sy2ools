@@ -38,7 +38,7 @@ namespace sly::sly2 {
 	std::vector<FileInformation> IArchiveFileSystem::getFiles() const {
 		std::vector<FileInformation> files;
 
-		enumFilesLambda([&](const char* pszFileName, u32 size) {
+		enumFiles([&](const char* pszFileName, u32 size) {
 			files.push_back(FileInformation {
 			.fileName = std::string(pszFileName),
 			.fileSize = size });

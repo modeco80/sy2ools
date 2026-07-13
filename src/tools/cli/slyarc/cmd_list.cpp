@@ -19,7 +19,7 @@ namespace slyarc {
 
 			try {
 				auto fs = slyarc::createArchiveFs(std::filesystem::path(argv[0]));
-				fs->enumFilesLambda([](const char* pszFileName, u32 size) {
+				fs->enumFiles([](const char* pszFileName, u32 size) {
 					printf("%16s %s\n", pszFileName, mco::makeHumanReadableByteSize(size).c_str());
 					return true;
 				});

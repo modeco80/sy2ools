@@ -191,7 +191,7 @@ namespace sly::sly2 {
 		return IsoFileSystem::Kind;
 	}
 
-	void IsoFileSystem::enumFiles(bool (*pcb)(const char* pszFileName, u32 size, void* user), void* user) const {
+	void IsoFileSystem::enumFilesImpl(bool (*pcb)(const char* pszFileName, u32 size, void* user), void* user) const {
 		for(auto i = 0; i < releaseData->nameMapTableCount; ++i) {
 			const auto& mapent = releaseData->nameMapTable[i];
 			u32 size;

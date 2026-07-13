@@ -34,15 +34,15 @@ namespace sly::sly2 {
 			return DefaultArchiveKind;
 		}
 
-		/// Enumerates all files in the archive.
-		virtual void enumFiles(bool (*pcb)(const char* pszFileName, u32 size, void* user), void* user) const = 0;
+		virtual void enumFilesImpl(bool (*pcb)(const char* pszFileName, u32 size, void* user), void* user) const = 0;
 
+		/// Enumerates all files in the archive.
 		template <class F>
-		void enumFilesLambda(F&& fun) const {
-			enumFiles([](const char* pszFileName, u32 size, void* user) -> bool {
+		void enumFiles(F&& fun) const {
+			enumFilesImpl([](const char* pszFileName, u32 size, void* user) -> bool {
 				return (*reinterpret_cast<F*>(user))(pszFileName, size);
 			},
-					  &fun);
+						  &fun);
 		}
 
 		/// Makes a "sane" file name from a FK$ lookup string.

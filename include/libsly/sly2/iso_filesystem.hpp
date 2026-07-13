@@ -5,7 +5,6 @@
 #include <libsly/sly2/release.hpp>
 #include <mco/io/file_stream.hpp>
 #include <mco/io/stream.hpp>
-#include <optional>
 #include <vector>
 
 namespace sly::sly2 {
@@ -13,9 +12,12 @@ namespace sly::sly2 {
 	using IsoFileId = u32;
 	struct ReleaseCdDataTable;
 
-	/// This class implements IArchiveFileSystem for of final builds of Sly 2.
+	/// This class implements IArchiveFileSystem for final builds of Sly 2.
+	///
 	/// Final builds of Sly 2 hard-bolt their files on the disc,
-	/// subverting the ISO 9660 & UDF filesystems entirely.
+	/// subverting WAL lookup, ISO 9660 & UDF filesystems entirely.
+	///
+	/// WAL lookup (FK$ strings) are replaced with obfuscated CD catalog entries.
 	///
 	/// This was seemingly only done for obfuscation purposes,
 	/// or I guess to thwart off "dumb" CD/DVD dumping utilities that would only dump ISO filesystem/sessions.
@@ -54,7 +56,7 @@ namespace sly::sly2 {
 
 		ArchiveKind getKind() const override;
 
-		void enumFiles(bool (*pcb)(const char* pszFileName, u32 size, void* user), void* user) const override;
+		void enumFilesImpl(bool (*pcb)(const char* pszFileName, u32 size, void* user), void* user) const override;
 
 		mco::Stream* openFileByLocation(const FileLocation& loc) override;
 
