@@ -1,18 +1,17 @@
 #pragma once
 #include <libsly/sly2/archive_filesystem.hpp>
+#include <libsly/sly2/file_location.hpp>
 #include <libsly/sly2/iso_filesystem_types.hpp>
 #include <libsly/sly2/release.hpp>
 #include <mco/io/file_stream.hpp>
 #include <mco/io/stream.hpp>
-#include <vector>
 #include <optional>
-#include <libsly/sly2/file_location.hpp>
+#include <vector>
 
 namespace sly::sly2 {
 
 	using IsoFileId = u32;
 	struct ReleaseCdDataTable;
-
 
 	/// This class implements IArchiveFileSystem for of final builds of Sly 2.
 	/// Final builds of Sly 2 hard-bolt their files on the disc,

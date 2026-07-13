@@ -1,7 +1,7 @@
 #pragma once
+#include <libsly/sly2/file_location.hpp>
 #include <mco/io/stream.hpp>
 #include <vector>
-#include <libsly/sly2/file_location.hpp>
 
 namespace sly::sly2 {
 
@@ -20,12 +20,6 @@ namespace sly::sly2 {
 		FileKind kind;
 		std::string fileName;
 		u32 fileSize;
-	};
-
-
-	struct File {
-		FileKind fk;
-		const char* pszFileName;
 	};
 
 	/// An archive filesystem abstraction.

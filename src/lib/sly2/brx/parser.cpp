@@ -45,7 +45,7 @@ namespace sly::sly2::brx {
 			return isoFs.mapCatalogEntryToName(catEnt);
 		} else {
 			// FK$ lookup string.
-			char bufLoc[0x40]{};
+			char bufLoc[0x40] {};
 			readAll(stream, &bufLoc[0], sizeof(bufLoc));
 			return FileLocation(bufLoc);
 		}

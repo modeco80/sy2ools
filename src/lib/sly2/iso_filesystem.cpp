@@ -87,7 +87,7 @@ namespace sly::sly2 {
 	};
 
 	IsoFileSystem::IsoFileSystem(mco::FileStream&& fs)
-	: isoFile(std::move(fs)) {
+		: isoFile(std::move(fs)) {
 		// Reset to very invalid state.
 		release = Release::Invalid;
 		cdCatalog = nullptr;
@@ -168,7 +168,7 @@ namespace sly::sly2 {
 			const auto& mapent = releaseData->nameMapTable[i];
 			if(mapent.kind == NameMappingTableEntry::MappingKind::CdSector) {
 				if(mapent.lbaStart == ent.getLba() && mapent.size == ent.getSize()) {
-					char fkString[0x40]{};
+					char fkString[0x40] {};
 					mapent.makeFkString(&fkString[0], sizeof(fkString));
 					return FileLocation(fkString);
 				}
@@ -176,7 +176,7 @@ namespace sly::sly2 {
 				const auto& catEnt = cdCatalog[mapent.fid];
 
 				if(catEnt.getLba() == ent.getLba() && catEnt.getSize() == ent.getSize()) {
-					char fkString[0x40]{};
+					char fkString[0x40] {};
 					mapent.makeFkString(&fkString[0], sizeof(fkString));
 					return FileLocation(fkString);
 				}
