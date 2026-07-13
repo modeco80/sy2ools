@@ -10,10 +10,35 @@ namespace sly::sly2 {
 // in theory a "rewal" too may be possible to make which re-inserts WAL FK$ entries.
 BEGIN_NAME_MAPPING_TABLE(NtscU, Release)
 	// Catalog names
-	// TODO: bunch of pssmovies which are in this table.
+	NAME_BY_FID(0, FileKind::PssMovie, "unk00.pss"),
+	NAME_BY_FID(1, FileKind::PssMovie, "unk01.pss"),
+	NAME_BY_FID(2, FileKind::PssMovie, "unk02.pss"),
+	NAME_BY_FID(3, FileKind::PssMovie, "unk03.pss"),
+	NAME_BY_FID(4, FileKind::PssMovie, "unk04.pss"),
+	NAME_BY_FID(5, FileKind::PssMovie, "unk05.pss"),
+	NAME_BY_FID(6, FileKind::PssMovie, "unk06.pss"),
+	NAME_BY_FID(7, FileKind::PssMovie, "unk07.pss"),
+	NAME_BY_FID(8, FileKind::PssMovie, "unk08.pss"),
+	NAME_BY_FID(9, FileKind::PssMovie, "unk09.pss"),
+	NAME_BY_FID(10, FileKind::PssMovie, "unk0a.pss"),
+	NAME_BY_FID(11, FileKind::PssMovie, "unk0b.pss"),
+	NAME_BY_FID(12, FileKind::PssMovie, "unk0c.pss"),
+	NAME_BY_FID(13, FileKind::PssMovie, "unk0d.pss"),
+	NAME_BY_FID(14, FileKind::PssMovie, "unk0e.pss"),
+	NAME_BY_FID(15, FileKind::PssMovie, "unk0f.pss"),
+	NAME_BY_FID(16, FileKind::PssMovie, "unk10.pss"),
+	NAME_BY_FID(17, FileKind::PssMovie, "unk11.pss"),
+	NAME_BY_FID(18, FileKind::PssMovie, "unk12.pss"),
+	NAME_BY_FID(19, FileKind::PssMovie, "unk13.pss"),
+	NAME_BY_FID(20, FileKind::PssMovie, "unk14.pss"),
+	NAME_BY_FID(21, FileKind::PssMovie, "unk15.pss"),
+	NAME_BY_FID(22, FileKind::PssMovie, "unk16.pss"),
+	NAME_BY_FID(23, FileKind::PssMovie, "unk17.pss"),
 	NAME_BY_FID(24, FileKind::PssMovie, "splash.pss"),
 	NAME_BY_FID(25, FileKind::BrxMap, "intro.brx"),
 	NAME_BY_FID(26, FileKind::IconMemcard, "memcard_icon.ico"),
+	NAME_BY_FID(28, FileKind::PssMovie, "unk18.pss"),
+	NAME_BY_FID(29, FileKind::PssMovie, "unk19.pss"),
 	// CD Sector names.
 
 	NAME_BY_LBA(0x00054b20, 1949759, FileKind::BrxMap, "unk02.brx"),

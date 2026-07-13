@@ -32,6 +32,8 @@ namespace slyarc {
 					auto fileOut = mco::FileStream::open(pszFileName, mco::FileStream::Create|mco::FileStream::ReadWrite);
 					auto bufferWrite = sly::core::BufferedWriteStream(fileOut, 0x2000);
 					mco::teeStreams(*file, bufferWrite, fileSize);
+
+					printf("extracted %s (%s)\n", pszFileName, mco::makeHumanReadableByteSize(fileSize).c_str());
 					return true;
 				});
 			} catch(std::exception& ex) {
