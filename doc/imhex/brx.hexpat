@@ -50,33 +50,33 @@ namespace ProxyTable {
 
 namespace CSoundMgr {
 
-	struct Unk6FileLocTable {
-		Common::CdCatalogEntry fiVag; // points to VAGp data
+	struct VoiceLineLoc {
+		Common::CdCatalogEntry catVag; // points to VAGp data
 		s8 unk;
 		float unk2;
 	};
 
-	struct Unk6IntTable {
+	struct VoiceLineUnkTable {
 		s16 unk;
 		s16 unk2;
 		s32 unk3;
 	};
 
-	struct Unk6 {
+	struct VoiceLine {
 		s16 unk1;
 		s16 unk2;
-		CSoundMgr::Unk6FileLocTable table[parent.cUnk5];
+		CSoundMgr::VoiceLineLoc voiceLines[parent.cLanguages];
 		s32 cTable;
-		CSoundMgr::Unk6IntTable aTable[cTable];
+		CSoundMgr::VoiceLineUnkTable aTable[cTable];
 	};
 
-	struct Unk7 {
+	struct Music {
 		s16 unk;
-		Common::CdCatalogEntry fiUnk;
+		Common::CdCatalogEntry fiMusic;
 	};
 
 	struct Root {
-		Common::CdCatalogEntry fiBank; // points to 989snd bank data
+		Common::CdCatalogEntry catBank; // points to 989snd bank data
 
 		s16 cUnk1;
 		s8 aUnk2[cUnk1];
@@ -85,20 +85,20 @@ namespace CSoundMgr {
 		s16 aUnk3[cUnk1]; // game array is sized as cUnk2,
 						// but CSoundMgr::LoadFromBrx reads cUnk1
 
-		s16 cUnk4;
-		if(cUnk4 > 0) {
-			Common::CdCatalogEntry fiVpk; // points to 'VPK ' data
-			s16 aUnk4[cUnk4];
+		s16 cEffects;
+		if(cEffects > 0) {
+			Common::CdCatalogEntry catEffects; // points to 'VPK ' data
+			s16 aEffects[cEffects];
 		}
 
-		u8 cUnk5;
-		u8 aUnk5[cUnk5];
+		u8 cLanguages;
+		u8 aLanguageIdTable[cLanguages]; //?
 
-		s32 cUnk6;
-		CSoundMgr::Unk6 aUnk6[cUnk6];
+		s32 cVoiceLines;
+		CSoundMgr::VoiceLine aVoiceLines[cVoiceLines];
 
-		s32 cUnk7;
-		CSoundMgr::Unk7 aUnk7[cUnk7];
+		s32 cMusic;
+		CSoundMgr::Music aMusic[cMusic];
 	};
 
 }
@@ -199,7 +199,7 @@ struct Brx {
 	s16 cProxy;
 	ProxyTable::Entry aProxy[cProxy];
 
-	// Class init datas
+	// Classes which have ::LoadFromBrx() methods
 	CSoundMgr::Root CSoundMgr;
 	CSaveTable::Root CSaveTable;
 
