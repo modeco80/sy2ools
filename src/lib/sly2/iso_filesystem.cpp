@@ -86,6 +86,21 @@ namespace sly::sly2 {
 		}
 	};
 
+	IsoFileSystem::IsoFileSystem(mco::FileStream&& fs)
+	: isoFile(std::move(fs)) {
+		// Reset to very invalid state.
+		release = Release::Invalid;
+		cdCatalog = nullptr;
+		releaseData = nullptr;
+		guessRelease();
+	}
+
+	IsoFileSystem::~IsoFileSystem() {
+		if(cdCatalog) {
+			delete[] cdCatalog;
+		}
+	}
+
 	void IsoFileSystem::guessRelease() {
 		// Do sha256 digest on the first 1MB of the ISO file.
 		isoFile.seek(0, mco::Stream::Begin);
@@ -128,25 +143,6 @@ namespace sly::sly2 {
 		}
 	}
 
-	IsoFileSystem::IsoFileSystem(mco::FileStream&& fs)
-		: isoFile(std::move(fs)) {
-		// Reset to very invalid state.
-		release = Release::Invalid;
-		cdCatalog = nullptr;
-		releaseData = nullptr;
-		guessRelease();
-	}
-
-	IsoFileSystem::~IsoFileSystem() {
-		if(cdCatalog) {
-			delete[] cdCatalog;
-		}
-	}
-
-	Release IsoFileSystem::getRelease() const {
-		return release;
-	}
-
 	mco::Stream* IsoFileSystem::openFileByFid(IsoFileId fid) {
 		if(fid > releaseData->countElfCdCatalog)
 			return nullptr;
@@ -158,6 +154,37 @@ namespace sly::sly2 {
 	mco::Stream* IsoFileSystem::openFileByCdSector(u32 lba, u32 cb) {
 		mFileStreams.push_back(std::make_unique<IsoFileStream>(*this, lba, cb));
 		return mFileStreams.back().get();
+	}
+
+	Release IsoFileSystem::getRelease() const {
+		return release;
+	}
+
+	FileLocation IsoFileSystem::mapCatalogEntryToName(const CdCatalogEntry& ent) {
+		// Go through the name mapping table. Depending on the type of the mapping table entry,
+		// we have to do a bit different, but ultimately, if we find a matching entry,
+		// return a FK$ mapped FileLocation.
+		for(auto i = 0; i < releaseData->nameMapTableCount; ++i) {
+			const auto& mapent = releaseData->nameMapTable[i];
+			if(mapent.kind == NameMappingTableEntry::MappingKind::CdSector) {
+				if(mapent.lbaStart == ent.getLba() && mapent.size == ent.getSize()) {
+					char fkString[0x40]{};
+					mapent.makeFkString(&fkString[0], sizeof(fkString));
+					return FileLocation(fkString);
+				}
+			} else if(mapent.kind == NameMappingTableEntry::MappingKind::Fid) {
+				const auto& catEnt = cdCatalog[mapent.fid];
+
+				if(catEnt.getLba() == ent.getLba() && catEnt.getSize() == ent.getSize()) {
+					char fkString[0x40]{};
+					mapent.makeFkString(&fkString[0], sizeof(fkString));
+					return FileLocation(fkString);
+				}
+			}
+		}
+
+		// return an unmapped FileLocation
+		return FileLocation(ent);
 	}
 
 	ArchiveKind IsoFileSystem::getKind() const {
@@ -182,6 +209,18 @@ namespace sly::sly2 {
 			if(!pcb(&fkString[0], size, user))
 				return;
 		}
+	}
+
+	mco::Stream* IsoFileSystem::openFileByLocation(const FileLocation& loc) {
+		if(loc.isFkLookup()) {
+			auto& fkLook = loc.getFkLookup();
+			return openFile(fkLook.c_str());
+		} else if(loc.isCdCatalog()) {
+			auto& catalogEntry = loc.getCdCatalog();
+			return openFileByCdSector(catalogEntry.getLba(), catalogEntry.getSize());
+		}
+
+		return nullptr;
 	}
 
 	mco::Stream* IsoFileSystem::openFile(const char* pszName) {

@@ -1,6 +1,7 @@
 #pragma once
 #include <mco/io/stream.hpp>
 #include <vector>
+#include <libsly/sly2/file_location.hpp>
 
 namespace sly::sly2 {
 
@@ -19,6 +20,12 @@ namespace sly::sly2 {
 		FileKind kind;
 		std::string fileName;
 		u32 fileSize;
+	};
+
+
+	struct File {
+		FileKind fk;
+		const char* pszFileName;
 	};
 
 	/// An archive filesystem abstraction.
@@ -48,6 +55,9 @@ namespace sly::sly2 {
 		void makeSaneFilename(char* pszOut, const char* pszFkLookup);
 
 		std::vector<FileInformation> getFiles() const;
+
+		/// Opens a file by location.
+		virtual mco::Stream* openFileByLocation(const FileLocation& loc) = 0;
 
 		/// Opens a file by FK$ search string.
 		virtual mco::Stream* openFile(const char* pszName) = 0;

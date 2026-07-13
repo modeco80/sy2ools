@@ -1,7 +1,10 @@
 add_library(libsly_sly2
+	# core archive/file stuff
 	archive_filesystem.cpp
-
+	file_location.cpp
 	release.cpp
+
+	# iso filesystem
 	iso_filemapping.cpp
 	iso_filesystem.cpp
 
