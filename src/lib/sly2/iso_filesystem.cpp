@@ -5,6 +5,8 @@
 #include <libsly/sly2/release.hpp>
 #include <mco/io/file_stream.hpp>
 
+#include "fk_utils.hpp"
+
 namespace sly::sly2 {
 
 	// in iso_filemapping.cpp. Just private because we don't really need it
@@ -174,16 +176,27 @@ namespace sly::sly2 {
 				size = mapent.size;
 			}
 
-			if(!pcb(mapent.pszFileName, size, user))
+			char fkString[0x40] {};
+			std::snprintf(&fkString[0], sizeof(fkString), "FK$%c%s", static_cast<char>(mapent.fk), mapent.pszFileName);
+
+			if(!pcb(&fkString[0], size, user))
 				return;
 		}
 	}
 
 	mco::Stream* IsoFileSystem::openFile(const char* pszName) {
-		// Look through the name mapping table, for a matching file name.
+		if(!validFkLookup(pszName)) {
+			return nullptr;
+		}
+
+		const auto fk = getFkLookupType(pszName);
+
 		for(auto i = 0; i < releaseData->nameMapTableCount; ++i) {
 			const auto& mapent = releaseData->nameMapTable[i];
-			if(!std::strcmp(mapent.pszFileName, pszName)) {
+			if(fk != mapent.fk)
+				continue;
+
+			if(!std::strcmp(mapent.pszFileName, getFkSearchName(pszName))) {
 				// If the name matches, depending on the kind of file, open it.
 				if(mapent.kind == NameMappingTableEntry::MappingKind::Fid)
 					return openFileByFid(mapent.fid);

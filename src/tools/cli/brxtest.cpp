@@ -8,7 +8,9 @@ int main(int argc, char** argv) {
 	auto isofs = sly::sly2::IsoFileSystem(std::move(fs));
 
 	sly::sly2::brx::BrxData data;
-	auto parser = sly::sly2::brx::Parser(isofs, "intro.brx");
+
+	// Load the intro BRX
+	auto parser = sly::sly2::brx::Parser(isofs, "FK$Zjb_intro");
 
 	if(!parser.parseAll(data)) {
 		printf("failed to parse brx\n");

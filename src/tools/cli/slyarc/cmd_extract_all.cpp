@@ -1,8 +1,8 @@
 #include <cstdio>
+#include <libsly/core/buffer_streams.hpp>
+#include <mco/io/file_stream.hpp>
 #include <mco/io/stream_utils.hpp>
 #include <mco/utils.hpp>
-#include <mco/io/file_stream.hpp>
-#include <libsly/core/buffer_streams.hpp>
 
 #include "cmd.hpp"
 #include "utils.hpp"
@@ -29,11 +29,14 @@ namespace slyarc {
 						return false;
 					}
 
-					auto fileOut = mco::FileStream::open(pszFileName, mco::FileStream::Create|mco::FileStream::ReadWrite);
+					char saneFileName[0x40] {};
+					fs->makeSaneFilename(&saneFileName[0], pszFileName);
+
+					auto fileOut = mco::FileStream::open(&saneFileName[0], mco::FileStream::Create | mco::FileStream::ReadWrite);
 					auto bufferWrite = sly::core::BufferedWriteStream(fileOut, 0x2000);
 					mco::teeStreams(*file, bufferWrite, fileSize);
 
-					printf("extracted %s (%s)\n", pszFileName, mco::makeHumanReadableByteSize(fileSize).c_str());
+					printf("extracted %s (%s) to %s\n", pszFileName, mco::makeHumanReadableByteSize(fileSize).c_str(), &saneFileName[0]);
 					return true;
 				});
 			} catch(std::exception& ex) {

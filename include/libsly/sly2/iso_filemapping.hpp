@@ -1,15 +1,8 @@
 #pragma once
+#include <libsly/sly2/archive_filesystem.hpp>
 #include <mco/base_types.hpp>
 
 namespace sly::sly2 {
-
-	// TODO: Fill this out
-	/// File kind. This directly maps to FK$ key codes.
-	enum class FileKind : u8 {
-		BrxMap = 'm',
-		IconMemcard = 'I',
-		PssMovie = 'Y',
-	};
 
 	struct NameMappingTableEntry {
 		enum class MappingKind : u32 {

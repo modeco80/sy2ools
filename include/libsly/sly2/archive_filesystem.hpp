@@ -7,7 +7,16 @@ namespace sly::sly2 {
 	using ArchiveKind = u8;
 	constexpr ArchiveKind DefaultArchiveKind = 0xff;
 
+	// TODO: Fill this out
+	/// File kind. This directly maps to FK$ key codes.
+	enum class FileKind : u8 {
+		BrxWorld = 'Z',
+		IconMemcard = 'I',
+		PssMovie = 'P',
+	};
+
 	struct FileInformation {
+		FileKind kind;
 		std::string fileName;
 		u32 fileSize;
 	};
@@ -34,6 +43,9 @@ namespace sly::sly2 {
 			},
 					  &fun);
 		}
+
+		/// Makes a "sane" file name from a FK$ lookup string.
+		void makeSaneFilename(char* pszOut, const char* pszFkLookup);
 
 		std::vector<FileInformation> getFiles() const;
 
