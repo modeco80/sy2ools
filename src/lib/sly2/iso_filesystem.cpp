@@ -177,7 +177,7 @@ namespace sly::sly2 {
 			}
 
 			char fkString[0x40] {};
-			std::snprintf(&fkString[0], sizeof(fkString), "FK$%c%s", static_cast<char>(mapent.fk), mapent.pszFileName);
+			mapent.makeFkString(&fkString[0], sizeof(fkString));
 
 			if(!pcb(&fkString[0], size, user))
 				return;

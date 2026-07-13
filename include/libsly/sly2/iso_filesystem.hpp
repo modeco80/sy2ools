@@ -38,6 +38,9 @@ namespace sly::sly2 {
 
 		Release getRelease() const;
 
+		// TODO:
+		// - const NameMappingTableEntry* mapCatalogEntryToName(const CdCatalogEntry& ent);
+
 		mco::Stream* openFileByFid(IsoFileId fid);
 		mco::Stream* openFileByCdSector(u32 lba, u32 cb);
 
@@ -48,7 +51,6 @@ namespace sly::sly2 {
 
 		void enumFiles(bool (*pcb)(const char* pszFileName, u32 size, void* user), void* user) const override;
 
-		/// Opens a file by name. Name mapping table must be complete.
 		mco::Stream* openFile(const char* pszName) override;
 
 		void closeFile(mco::Stream* stream) override;

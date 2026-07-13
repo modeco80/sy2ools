@@ -21,7 +21,7 @@ namespace sly::sly2 {
 		u32 fileSize;
 	};
 
-	/// Abstraction over archive files..
+	/// An archive filesystem abstraction.
 	class IArchiveFileSystem {
 	   public:
 		virtual ~IArchiveFileSystem() = default;
@@ -49,8 +49,10 @@ namespace sly::sly2 {
 
 		std::vector<FileInformation> getFiles() const;
 
+		/// Opens a file by FK$ search string.
 		virtual mco::Stream* openFile(const char* pszName) = 0;
 
+		/// Closes a file previously opened by [openFile()].
 		virtual void closeFile(mco::Stream* file) = 0;
 	};
 

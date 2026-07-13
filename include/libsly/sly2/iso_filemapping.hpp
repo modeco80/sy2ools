@@ -26,6 +26,11 @@ namespace sly::sly2 {
 
 		FileKind fk;
 		const char* pszFileName;
+
+		/// Makes a WAL FK$ search string from this mapping table entry.
+		void makeFkString(char* pszOut, usize length) const {
+			std::snprintf(&pszOut[0], length, "FK$%c%s", static_cast<char>(fk), pszFileName);
+		}
 	};
 
 	struct ReleaseCdDataTable {
