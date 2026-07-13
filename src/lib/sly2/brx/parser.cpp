@@ -1,8 +1,10 @@
 #include <libsly/sly2/brx/parser.hpp>
+#include <libsly/sly2/iso_filesystem.hpp>
 
 namespace sly::sly2::brx {
 
 	// IO helpers
+	// TODO: might be useful in another file.
 
 	class ShortRead : public std::exception {
 	   public:
@@ -25,11 +27,28 @@ namespace sly::sly2::brx {
 
 	std::string readSwString(mco::Stream& stream) {
 		std::string ret;
-		const auto nLen = readLiteral<i16>(stream);
-
-		ret.resize(nLen);
-		readAll(stream, &ret[0], nLen);
+		const auto nStringLen = readLiteral<i16>(stream);
+		ret.resize(nStringLen);
+		readAll(stream, &ret[0], nStringLen);
 		return ret;
+	}
+
+	FileLocation readLocation(mco::Stream& stream, IArchiveFileSystem& fs) {
+		if(fs.getKind() == IsoFileSystem::Kind) {
+			auto& isoFs = reinterpret_cast<IsoFileSystem&>(fs);
+			CdCatalogEntry catEnt;
+			readAll(stream, &catEnt, sizeof(CdCatalogEntry));
+
+			// IsoFileSystem contains a helper method to map CD catalogs back to
+			// FK$ if it knows about them, so use it. This allows locations read here
+			// to become FK$ as soon as the mappings are updated, which is pretty cool.
+			return isoFs.mapCatalogEntryToName(catEnt);
+		} else {
+			// FK$ lookup string.
+			char bufLoc[0x40]{};
+			readAll(stream, &bufLoc[0], sizeof(bufLoc));
+			return FileLocation(bufLoc);
+		}
 	}
 
 	Parser::Parser(IArchiveFileSystem& fs, const char* pszFileName)
@@ -57,6 +76,8 @@ namespace sly::sly2::brx {
 
 			// Read every proxy table item.
 			for(auto i = 0; i < countProxyTable; ++i) {
+				// This is supposed to be a location. However it was never mapped
+				// to a CD catalog entry, since it didn't exist in the WAL.
 				readAll(*brxStream, &data.proxyTable[i].name[0], 0x40);
 				data.proxyTable[i].unk1 = readLiteral<i32>(*brxStream);
 				data.proxyTable[i].unk2 = readLiteral<i32>(*brxStream);
