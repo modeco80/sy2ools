@@ -53,6 +53,12 @@ BEGIN_NAME_MAPPING_TABLE(NtscU, Release)
 	NAME_BY_LBA(0x00125acb, 147488, VagEnglish, "e0_museum_entry_06_sly_1"),
 	NAME_BY_LBA(0x00125b14, 122720, VagEnglish, "e0_museum_entry_07_bnt_radio_1"),
 	NAME_BY_LBA(0x00125b50, 49312, VagEnglish, "e0_museum_entry_08_sly_1"),
+	NAME_BY_LBA(0x00125b69, 72896, VagEnglish, "e0_hack_computer_01_bnt_radio_1"),
+	NAME_BY_LBA(0x00125b8d, 53008, VagEnglish, "e0_hack_computer_02_bnt_1"),
+	NAME_BY_LBA(0x00125ba7, 64496, VagEnglish, "e0_hack_computer_03_bnt_1"),
+	NAME_BY_LBA(0x00125bc7, 25872, VagEnglish, "e0_hack_computer_04_bnt_1"),
+	NAME_BY_LBA(0x00125bd4, 22640, VagEnglish, "e0_hack_computer_05_bnt_1"),
+	NAME_BY_LBA(0x00125be0, 37824, VagEnglish, "e0_hack_computer_06_sly_1"),
 
 
 	// Brx worlds
