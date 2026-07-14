@@ -25,9 +25,9 @@ int main(int argc, char** argv) {
 		printf("voiceline = %s runtime %f\n", tmp.c_str(), voent.languages[0].flRuntime);
 	}
 
-	//for(auto& ent : data.save.hashTableEntries) {
+	// for(auto& ent : data.save.hashTableEntries) {
 	//	printf("save hash %s = %d\n", ent.key.c_str(), ent.value);
-	//}
+	// }
 
 	for(auto& ent : data.worldTable.worlds) {
 		auto tmp = ent.locBrx.toString();

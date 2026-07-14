@@ -3,6 +3,7 @@ add_library(libsly_sly2
 	archive_filesystem.cpp
 	file_location.cpp
 	release.cpp
+	fk_utils.cpp
 
 	# iso filesystem
 	iso_filemapping.cpp

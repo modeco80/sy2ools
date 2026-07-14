@@ -1,4 +1,5 @@
 #include <libsly/sly2/archive_filesystem.hpp>
+#include <cstring>
 
 #include "fk_utils.hpp"
 
