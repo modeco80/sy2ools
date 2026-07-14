@@ -50,6 +50,15 @@ BEGIN_NAME_MAPPING_TABLE(NtscU, Release)
 	// voice lines
 	NAME_BY_LBA(0x00125a22, 53344, FileKind::VagEnglish, "mission_abandon_sly_murray_bnt_radio_1"),
 	NAME_BY_LBA(0x00125a3d, 49920, FileKind::VagEnglish, "mission_abandon_bentley_bnt_1"),
+	NAME_BY_LBA(0x00125a56, 65920, FileKind::VagEnglish, "e0_museum_entry_01_bnt_radio_1"),
+	NAME_BY_LBA(0x00125a77, 30368, FileKind::VagEnglish, "e0_museum_entry_02_sly_1"),
+	NAME_BY_LBA(0x00125a86, 55568, FileKind::VagEnglish, "e0_museum_entry_03_bnt_radio_1"),
+	NAME_BY_LBA(0x00125aa2, 29760, FileKind::VagEnglish, "e0_museum_entry_04_sly_1"),
+	NAME_BY_LBA(0x00125ab1, 52880, FileKind::VagEnglish, "e0_museum_entry_05_bnt_radio_1"),
+	NAME_BY_LBA(0x00125acb, 147488, FileKind::VagEnglish, "e0_museum_entry_06_sly_1"),
+	NAME_BY_LBA(0x00125b14, 122720, FileKind::VagEnglish, "e0_museum_entry_07_bnt_radio_1"),
+	NAME_BY_LBA(0x00125b50, 49312, FileKind::VagEnglish, "e0_museum_entry_08_sly_1"),
+
 
 	// Brx worlds
 	NAME_BY_LBA(0x00054b20, 1949759, FileKind::BrxWorld, "dvd_menu"),
