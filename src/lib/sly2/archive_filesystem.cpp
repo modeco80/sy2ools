@@ -27,6 +27,17 @@ namespace sly::sly2 {
 			case IconMemcard:
 				std::strcpy(ext, "ico");
 				break;
+			case BnkAudio:
+				std::strcpy(ext, "bnk");
+				break;
+				// not ideal but eh
+			case VagEnglish:
+				std::strcpy(ext, "e.vag");
+				break;
+			case VpkMusic:
+			case VpkEffects:
+				std::strcpy(ext, "vpk");
+				break;
 			default:
 				sprintf(&ext[0], "FK%c", fkType);
 				return;

@@ -1,5 +1,6 @@
 #include <libsly/sly2/iso_filemapping.hpp>
 #include <libsly/sly2/release.hpp>
+#include "libsly/sly2/archive_filesystem.hpp"
 
 namespace sly::sly2 {
 
@@ -40,6 +41,16 @@ BEGIN_NAME_MAPPING_TABLE(NtscU, Release)
 	NAME_BY_FID(28, FileKind::PssMovie, "unk18"),
 	NAME_BY_FID(29, FileKind::PssMovie, "unk19"),
 	// CD Sector names.
+
+	NAME_BY_LBA(0x00053460, 11696128, FileKind::VpkMusic, "jb_intro"),
+	NAME_BY_LBA(0x00052500, 1206504, FileKind::BnkAudio, "jb_intro"),
+
+	// Effects
+	NAME_BY_LBA(0x000527c0, 6588416, FileKind::VpkEffects, "jb_intro_effects_1"),
+
+	// voice lines
+	NAME_BY_LBA(0x00125a22, 53344, FileKind::VagEnglish, "mission_abandon_sly_murray_bnt_radio_1"),
+	NAME_BY_LBA(0x00125a3d, 49920, FileKind::VagEnglish, "mission_abandon_bentley_bnt_1"),
 
 	// Brx worlds
 	NAME_BY_LBA(0x00054b20, 1949759, FileKind::BrxWorld, "dvd_menu"),

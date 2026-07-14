@@ -13,6 +13,14 @@ namespace sly::sly2 {
 	enum class FileKind : u8 {
 		BrxWorld = 'Z',
 		IconMemcard = 'I',
+
+		// Audio
+		BnkAudio = 'B',
+		VpkMusic = 'M',
+		VpkEffects = 'E',
+
+		VagEnglish = 'e',
+
 		PssMovie = 'P',
 	};
 
