@@ -1,4 +1,5 @@
 #include <cstring>
+#include <algorithm>
 #include <libsly/core/sha256.hpp>
 #include <libsly/sly2/iso_filemapping.hpp>
 #include <libsly/sly2/iso_filesystem.hpp>
@@ -248,8 +249,13 @@ namespace sly::sly2 {
 	}
 
 	void IsoFileSystem::closeFile(mco::Stream* stream) {
-		// TODO
-		printf("Warning IsoFileSystem::closeFile() not yet implemented, leaking this file for now..\n");
+		auto it = std::find_if(mFileStreams.begin(), mFileStreams.end(), [&](auto& sp) {
+			return sp.get() == stream;
+		});
+
+		if(it != mFileStreams.end()) {
+			mFileStreams.erase(it);
+		}
 	}
 
 } // namespace sly::sly2
