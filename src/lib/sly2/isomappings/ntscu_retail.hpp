@@ -66,6 +66,15 @@ BEGIN_NAME_MAPPING_TABLE(NtscU, Release)
 	NAME_BY_LBA(0x00125d44, 69680, VagEnglish, "e0_wire_work_05_bnt_radio_1"),
 	NAME_BY_LBA(0x00125d67, 70512, VagEnglish, "e0_wire_work_06_bnt_radio_1"),
 
+	NAME_BY_LBA(0x00125d8a, 22288, VagEnglish, "e0_skylight_break_01_mur_1"),
+	NAME_BY_LBA(0x00125d95, 77472, VagEnglish, "e0_skylight_break_02_mur_1"),
+	NAME_BY_LBA(0x00125dbb, 24256, VagEnglish, "e0_skylight_break_03_sly_1"),
+	NAME_BY_LBA(0x00125dc7, 81232, VagEnglish, "e0_skylight_break_04_mur_1"),
+	NAME_BY_LBA(0x00125def, 47776, VagEnglish, "e0_skylight_break_05_sly_1"),
+	NAME_BY_LBA(0x00125e07, 53008, VagEnglish, "e0_skylight_break_06_mur_1"),
+	NAME_BY_LBA(0x00125e21, 68864, VagEnglish, "e0_skylight_break_07_mur_1"),
+	NAME_BY_LBA(0x00125e43, 85264, VagEnglish, "e0_skylight_break_08_mur_1"),
+
 	// Brx worlds
 	NAME_BY_LBA(0x00054b20, 1949759, BrxWorld, "dvd_menu"),
 	NAME_BY_LBA(0x000559a0, 10938886, BrxWorld, "f_nightclub_exterior"),
