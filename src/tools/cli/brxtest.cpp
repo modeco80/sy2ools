@@ -1,6 +1,6 @@
+#include <libsly/sly2/brx/data.hpp>
 #include <libsly/sly2/brx/parser.hpp>
 #include <libsly/sly2/iso_filesystem.hpp>
-#include <libsly/sly2/brx/data.hpp>
 
 int main(int argc, char** argv) {
 	auto fs = mco::FileStream::open(argv[1], mco::FileStream::Read);

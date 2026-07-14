@@ -20,7 +20,7 @@ namespace slyarc {
 			try {
 				auto fs = slyarc::createArchiveFs(std::filesystem::path(argv[0]));
 				fs->enumFiles([&](const char* pszFileName, u32 size) {
-					char saneName[0x40]{};
+					char saneName[0x40] {};
 					fs->makeSaneFilename(&saneName[0], pszFileName);
 
 					printf("%s (%s) %s\n", pszFileName, &saneName[0], mco::makeHumanReadableByteSize(size).c_str());
