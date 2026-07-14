@@ -150,6 +150,8 @@ namespace sly::sly2 {
 	}
 
 	mco::Stream* IsoFileSystem::openFileByCdSector(u32 lba, u32 cb) {
+		if(cb == 0)
+			return nullptr;
 		mFileStreams.push_back(std::make_unique<IsoFileStream>(*this, lba, cb));
 		return mFileStreams.back().get();
 	}
@@ -239,7 +241,7 @@ namespace sly::sly2 {
 			return openFileByFk(fkLook.c_str());
 		} else if(loc.isCdCatalog()) {
 			auto& catalogEntry = loc.getCdCatalog();
-			return openFileByCdSector(catalogEntry.getLba(), catalogEntry.getSize());
+			return openFileByCdSector(catalogEntry.getLba() + releaseData->lbaCdDataBase, catalogEntry.getSize());
 		}
 
 		return nullptr;
