@@ -108,12 +108,12 @@ namespace sly::sly2::brx {
 			line.unk1 = readLiteral<i16>(*brxStream);
 			line.unk2 = readLiteral<i16>(*brxStream);
 
-			line.lineFiles.resize(cLanguages);
+			line.languages.resize(cLanguages);
 
 			for(auto i = 0; i < cLanguages; ++i) {
-				line.lineFiles[i].vagLocation = readLocation(*brxStream, fs);
-				line.lineFiles[i].unk = readLiteral<i8>(*brxStream);
-				line.lineFiles[i].unk2 = readLiteral<float>(*brxStream);
+				line.languages[i].vagLocation = readLocation(*brxStream, fs);
+				line.languages[i].unk = readLiteral<i8>(*brxStream);
+				line.languages[i].flRuntime = readLiteral<float>(*brxStream);
 			}
 
 			const auto cTable = readLiteral<i32>(*brxStream);

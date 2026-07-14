@@ -50,10 +50,10 @@ namespace ProxyTable {
 
 namespace CSoundMgr {
 
-	struct VoiceLineLoc {
-		Common::CdCatalogEntry catVag; // points to VAGp data
+	struct VoiceLineLanguage {
+		Common::CdCatalogEntry catVag; // points to VAGp data for the clip
 		s8 unk;
-		float unk2;
+		float flRuntime; // clip length
 	};
 
 	struct VoiceLineUnkTable {
@@ -65,7 +65,7 @@ namespace CSoundMgr {
 	struct VoiceLine {
 		s16 unk1;
 		s16 unk2;
-		CSoundMgr::VoiceLineLoc voiceLines[parent.cLanguages];
+		CSoundMgr::VoiceLineLanguage voiceLines[parent.cLanguages];
 		s32 cTable;
 		CSoundMgr::VoiceLineUnkTable aTable[cTable];
 	};

@@ -7,10 +7,11 @@
 namespace sly::sly2::brx {
 
 	struct VoiceLine {
-		struct LineFile {
+		struct LineLanguage {
 			FileLocation vagLocation;
 			int unk;
-			float unk2;
+			/// Runtime of the clip.
+			float flRuntime;
 		};
 
 		struct UnkTable {
@@ -21,7 +22,8 @@ namespace sly::sly2::brx {
 
 		int unk1;
 		int unk2;
-		std::vector<LineFile> lineFiles;
+		/// Each language's take.
+		std::vector<LineLanguage> languages;
 		std::vector<UnkTable> table;
 	};
 
