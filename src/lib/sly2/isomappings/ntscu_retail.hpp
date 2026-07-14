@@ -75,7 +75,7 @@ BEGIN_NAME_MAPPING_TABLE(NtscU, Release)
 	NAME_BY_LBA(0x00125e43, 85264, VagEnglish, "e0_skylight_break_08_mur_1"),
 	NAME_BY_LBA(0x00125e6d, 39168, VagEnglish, "e0_murray_help_done_01_sly_1"),
 	NAME_BY_LBA(0x00125e81, 144944, VagEnglish, "e0_murray_help_done_02_mur_1"),
-
+	NAME_BY_LBA(0x00125ec8, 105696, VagEnglish, "e0_clockwerk_parts_01_bnt_radio_1"),
 
 	// Brx worlds
 	NAME_BY_LBA(0x00054b20, 1949759, BrxWorld, "dvd_menu"),
