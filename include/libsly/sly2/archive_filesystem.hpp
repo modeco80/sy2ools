@@ -59,10 +59,7 @@ namespace sly::sly2 {
 		std::vector<FileInformation> getFiles() const;
 
 		/// Opens a file by location.
-		virtual mco::Stream* openFileByLocation(const FileLocation& loc) = 0;
-
-		/// Opens a file by FK$ search string.
-		virtual mco::Stream* openFile(const char* pszName) = 0;
+		virtual mco::Stream* openFile(const FileLocation& loc) = 0;
 
 		/// Closes a file previously opened by [openFile()].
 		virtual void closeFile(mco::Stream* file) = 0;

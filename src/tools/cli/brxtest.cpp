@@ -1,7 +1,6 @@
 #include <libsly/sly2/brx/parser.hpp>
 #include <libsly/sly2/iso_filesystem.hpp>
-
-#include "libsly/sly2/brx/data.hpp"
+#include <libsly/sly2/brx/data.hpp>
 
 int main(int argc, char** argv) {
 	auto fs = mco::FileStream::open(argv[1], mco::FileStream::Read);
@@ -10,7 +9,7 @@ int main(int argc, char** argv) {
 	sly::sly2::brx::BrxData data;
 
 	// Load the intro BRX
-	auto parser = sly::sly2::brx::Parser(isofs, "FK$Zjb_intro");
+	auto parser = sly::sly2::brx::Parser(isofs, sly::sly2::FileLocation("FK$Zjb_intro"));
 
 	if(!parser.parseAll(data)) {
 		printf("failed to parse brx\n");

@@ -157,6 +157,30 @@ namespace sly::sly2 {
 		return mFileStreams.back().get();
 	}
 
+	mco::Stream* IsoFileSystem::openFileByFk(const char* pszName) {
+		if(!validFkLookup(pszName)) {
+			return nullptr;
+		}
+
+		const auto fk = getFkLookupType(pszName);
+
+		for(auto i = 0; i < releaseData->nameMapTableCount; ++i) {
+			const auto& mapent = releaseData->nameMapTable[i];
+			if(fk != mapent.fk)
+				continue;
+
+			if(!std::strcmp(mapent.pszFileName, getFkSearchName(pszName))) {
+				// If the name matches, depending on the kind of file, open it.
+				if(mapent.kind == NameMappingTableEntry::MappingKind::Fid)
+					return openFileByFid(mapent.fid);
+				else if(mapent.kind == NameMappingTableEntry::MappingKind::CdSector)
+					return openFileByCdSector(mapent.lbaStart + releaseData->lbaCdDataBase, mapent.size);
+			}
+		}
+
+		return nullptr;
+	}
+
 	Release IsoFileSystem::getRelease() const {
 		return release;
 	}
@@ -212,10 +236,10 @@ namespace sly::sly2 {
 		}
 	}
 
-	mco::Stream* IsoFileSystem::openFileByLocation(const FileLocation& loc) {
+	mco::Stream* IsoFileSystem::openFile(const FileLocation& loc) {
 		if(loc.isFkLookup()) {
 			auto& fkLook = loc.getFkLookup();
-			return openFile(fkLook.c_str());
+			return openFileByFk(fkLook.c_str());
 		} else if(loc.isCdCatalog()) {
 			auto& catalogEntry = loc.getCdCatalog();
 			return openFileByCdSector(catalogEntry.getLba(), catalogEntry.getSize());
@@ -224,29 +248,6 @@ namespace sly::sly2 {
 		return nullptr;
 	}
 
-	mco::Stream* IsoFileSystem::openFile(const char* pszName) {
-		if(!validFkLookup(pszName)) {
-			return nullptr;
-		}
-
-		const auto fk = getFkLookupType(pszName);
-
-		for(auto i = 0; i < releaseData->nameMapTableCount; ++i) {
-			const auto& mapent = releaseData->nameMapTable[i];
-			if(fk != mapent.fk)
-				continue;
-
-			if(!std::strcmp(mapent.pszFileName, getFkSearchName(pszName))) {
-				// If the name matches, depending on the kind of file, open it.
-				if(mapent.kind == NameMappingTableEntry::MappingKind::Fid)
-					return openFileByFid(mapent.fid);
-				else if(mapent.kind == NameMappingTableEntry::MappingKind::CdSector)
-					return openFileByCdSector(mapent.lbaStart + releaseData->lbaCdDataBase, mapent.size);
-			}
-		}
-
-		return nullptr;
-	}
 
 	void IsoFileSystem::closeFile(mco::Stream* stream) {
 		auto it = std::find_if(mFileStreams.begin(), mFileStreams.end(), [&](auto& sp) {

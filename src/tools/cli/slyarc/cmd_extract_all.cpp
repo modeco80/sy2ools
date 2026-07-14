@@ -23,7 +23,7 @@ namespace slyarc {
 			try {
 				auto fs = slyarc::createArchiveFs(std::filesystem::path(argv[0]));
 				fs->enumFiles([&](const char* pszFileName, u32 fileSize) {
-					auto* file = fs->openFile(pszFileName);
+					auto* file = fs->openFile(sly::sly2::FileLocation(pszFileName));
 					if(!file) {
 						std::printf("Couldn't open file %s in archive %s??\n", pszFileName, argv[0]);
 						return false;

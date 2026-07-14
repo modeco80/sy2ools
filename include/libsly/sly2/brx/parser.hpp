@@ -1,8 +1,8 @@
 #pragma once
 #include <libsly/core/sly_lz_stream.hpp>
 #include <libsly/sly2/archive_filesystem.hpp>
-// Brx data.
 #include <libsly/sly2/brx/data.hpp>
+#include <libsly/sly2/file_location.hpp>
 
 namespace sly::sly2 {
 	namespace brx {
@@ -31,8 +31,7 @@ namespace sly::sly2 {
 
 		   public:
 			// helper which opens from a IArchiveFileSystem instance
-			Parser(IArchiveFileSystem& fs, const char* pszFileName);
-			// TODO Parser(Stream& stream, CompressKind kind);
+			Parser(IArchiveFileSystem& fs, const FileLocation& loc);
 			~Parser();
 
 			/// Parses all data out of the brx level..

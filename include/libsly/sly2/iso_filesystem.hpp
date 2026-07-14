@@ -36,6 +36,7 @@ namespace sly::sly2 {
 
 		mco::Stream* openFileByFid(IsoFileId fid);
 		mco::Stream* openFileByCdSector(u32 lba, u32 cb);
+		mco::Stream* openFileByFk(const char* pszName);
 
 	   public:
 		explicit IsoFileSystem(mco::FileStream&& isoFile);
@@ -58,9 +59,7 @@ namespace sly::sly2 {
 
 		void enumFilesImpl(bool (*pcb)(const char* pszFileName, u32 size, void* user), void* user) const override;
 
-		mco::Stream* openFileByLocation(const FileLocation& loc) override;
-
-		mco::Stream* openFile(const char* pszName) override;
+		mco::Stream* openFile(const FileLocation& loc) override;
 
 		void closeFile(mco::Stream* stream) override;
 	};

@@ -59,11 +59,11 @@ namespace sly::sly2::brx {
 		}
 	}
 
-	Parser::Parser(IArchiveFileSystem& fs, const char* pszFileName)
+	Parser::Parser(IArchiveFileSystem& fs, const FileLocation& loc)
 		: fs(fs) {
 		// Open the raw file from the given archive implementation.
 		// If this fails, we can't really do much else anyways.
-		brxRawStream = fs.openFile(pszFileName);
+		brxRawStream = fs.openFile(loc);
 		if(brxRawStream == nullptr) {
 			throw std::runtime_error("Could not open BRX from given IArchiveFileSystem implementation.");
 		}
