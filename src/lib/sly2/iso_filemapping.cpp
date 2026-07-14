@@ -1,8 +1,8 @@
-#include <libsly/sly2/iso_filemapping.hpp>
+#include "iso_filemapping.hpp"
+
 #include <libsly/sly2/release.hpp>
 
 #include "fk_utils.hpp"
-
 #include "isomappings/ntscu_retail.hpp"
 
 namespace sly::sly2 {

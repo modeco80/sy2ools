@@ -1,5 +1,6 @@
 #pragma once
 #include <libsly/sly2/archive_filesystem.hpp>
+#include <libsly/sly2/release.hpp>
 #include <mco/base_types.hpp>
 
 namespace sly::sly2 {
@@ -65,4 +66,6 @@ namespace sly::sly2 {
 		.nameMapTable = &sMappingTable_##region##_##version[0]                                                      \
 	}
 
+	/// Gets the release data table for a particular release.
+	const ReleaseCdDataTable* getCdDataForRelease(Release release);
 } // namespace sly::sly2

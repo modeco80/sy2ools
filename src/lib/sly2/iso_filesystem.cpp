@@ -1,17 +1,14 @@
 #include <algorithm>
 #include <cstring>
 #include <libsly/core/sha256.hpp>
-#include <libsly/sly2/iso_filemapping.hpp>
 #include <libsly/sly2/iso_filesystem.hpp>
 #include <libsly/sly2/release.hpp>
 #include <mco/io/file_stream.hpp>
 
 #include "fk_utils.hpp"
+#include "iso_filemapping.hpp"
 
 namespace sly::sly2 {
-
-	// in iso_filemapping.cpp. Just private because we don't really need it
-	const ReleaseCdDataTable* getCdDataForRelease(Release release);
 
 	constexpr u64 lbaToOffset(u32 lba) {
 		return static_cast<u64>(lba) * 0x800;

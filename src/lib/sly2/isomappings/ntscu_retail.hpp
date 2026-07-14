@@ -1,4 +1,4 @@
-#include <libsly/sly2/iso_filemapping.hpp>
+#include "../iso_filemapping.hpp"
 
 // clang-format off
 
