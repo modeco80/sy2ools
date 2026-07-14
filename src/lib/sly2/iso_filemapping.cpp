@@ -5,6 +5,10 @@
 
 namespace sly::sly2 {
 
+	void NameMappingTableEntry::makeFkString(char* pszOut, usize length) const {
+		std::snprintf(&pszOut[0], length, "FK$%c%s", static_cast<char>(fk), pszFileName);
+	}
+
 	const ReleaseCdDataTable* getCdDataForRelease(Release release) {
 #define X(region, version, _sha256) \
 	case region##_##version:        \
