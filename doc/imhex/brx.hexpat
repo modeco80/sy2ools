@@ -153,19 +153,19 @@ namespace TextTable {
 
 	struct StringEntry {
 		s16 id;
-		Common::SwString string;
+		Common::SwString strings[parent.cLanguages];
 	} [[format("TextTable::format_string_entry")]];
 
 	fn format_string_entry(ref StringEntry se) {
-		return std::format("{}", se.string.string);
+		return std::format("{}", se.strings[0].string);
 	};
 
 	struct Root {
-		u8 unk1;
-		u8 unk2;
+		u8 cLanguages;
+		u8 languageIdTable[cLanguages];
 
-		s16 nrStrings;
-		TextTable::StringEntry strings[nrStrings];
+		s16 cStrings;
+		TextTable::StringEntry aStrings[cStrings];
 	};
 }
 
