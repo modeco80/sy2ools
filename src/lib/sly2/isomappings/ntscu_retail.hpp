@@ -59,7 +59,12 @@ BEGIN_NAME_MAPPING_TABLE(NtscU, Release)
 	NAME_BY_LBA(0x00125bc7, 25872, VagEnglish, "e0_hack_computer_04_bnt_1"),
 	NAME_BY_LBA(0x00125bd4, 22640, VagEnglish, "e0_hack_computer_05_bnt_1"),
 	NAME_BY_LBA(0x00125be0, 37824, VagEnglish, "e0_hack_computer_06_sly_1"),
-
+	NAME_BY_LBA(0x00125bf3, 180288, VagEnglish, "e0_wire_work_01_bnt_1"),
+	NAME_BY_LBA(0x00125c4c, 272320, VagEnglish, "e0_wire_work_02_bnt_pa_1"),
+	NAME_BY_LBA(0x00125cd1, 197360, VagEnglish, "e0_wire_work_03_bnt_radio_1"),
+	NAME_BY_LBA(0x00125d32, 35008, VagEnglish, "e0_wire_work_04_sly_1"),
+	NAME_BY_LBA(0x00125d44, 69680, VagEnglish, "e0_wire_work_05_bnt_radio_1"),
+	NAME_BY_LBA(0x00125d67, 70512, VagEnglish, "e0_wire_work_06_bnt_radio_1"),
 
 	// Brx worlds
 	NAME_BY_LBA(0x00054b20, 1949759, BrxWorld, "dvd_menu"),
