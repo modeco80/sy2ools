@@ -33,6 +33,14 @@ namespace sly::sly2::brx {
 		return ret;
 	}
 
+	template<class TCountInt, class Out, class FnRead>
+	void readArray(mco::Stream& stream, std::vector<Out>& array, FnRead&& doRead) {
+		const auto nCount = readLiteral<TCountInt>(stream);
+		array.resize(nCount);
+		for(usize i = 0; i < nCount; ++i)
+			doRead(stream, array[i]);
+	}
+
 	FileLocation readLocation(mco::Stream& stream, IArchiveFileSystem& fs) {
 		if(fs.getKind() == IsoFileSystem::Kind) {
 			auto& isoFs = reinterpret_cast<IsoFileSystem&>(fs);
@@ -93,10 +101,83 @@ namespace sly::sly2::brx {
 		return true;
 	}
 
+
+	bool Parser::parseSoundData(BrxData& data) {
+		auto& snd = data.sound;
+
+		auto parseVoiceLine = [&](VoiceLine& line, u32 cLanguages) {
+			line.unk1 = readLiteral<i16>(*brxStream);
+			line.unk2 = readLiteral<i16>(*brxStream);
+
+			line.lineFiles.resize(cLanguages);
+
+			for(auto i = 0; i < cLanguages; ++i) {
+				line.lineFiles[i].vagLocation = readLocation(*brxStream, fs);
+				line.lineFiles[i].unk = readLiteral<i8>(*brxStream);
+				line.lineFiles[i].unk2 = readLiteral<float>(*brxStream);
+			}
+
+			const auto cTable = readLiteral<i32>(*brxStream);
+			line.table.resize(cTable);
+			for(auto i = 0; i < cTable; ++i) {
+				line.table[i].unk = readLiteral<i16>(*brxStream);
+				line.table[i].unk2 = readLiteral<i16>(*brxStream);
+				line.table[i].unk3 = readLiteral<i32>(*brxStream);
+			}
+		};
+
+		try {
+			snd.bankFile = readLocation(*brxStream, fs);
+
+			const auto cUnkTable1 = readLiteral<i16>(*brxStream);
+			snd.unkTable.resize(cUnkTable1);
+			for(auto i = 0; i < cUnkTable1; ++i)
+				snd.unkTable[i] = readLiteral<i8>(*brxStream);
+
+			const auto cUnkTable2 = readLiteral<i16>(*brxStream);
+			snd.unkTable2.resize(cUnkTable2, -1);
+			for(auto i = 0; i < cUnkTable1; ++i)
+				snd.unkTable2[i] = readLiteral<i16>(*brxStream);
+
+			const auto cEffects = readLiteral<i16>(*brxStream);
+			if(cEffects > 0) {
+				snd.effectData = readLocation(*brxStream, fs);
+
+				snd.effects.resize(cEffects);
+				for(auto i = 0; i < cEffects; ++i)
+					snd.effects[i] = readLiteral<i16>(*brxStream);
+			}
+
+			const auto cLanguages = readLiteral<u8>(*brxStream);
+
+			snd.languageIdTable.resize(cLanguages);
+			for(auto i = 0; i < cLanguages; ++i)
+				snd.languageIdTable[i] = readLiteral<u8>(*brxStream);
+
+			const auto cVoiceLines = readLiteral<i32>(*brxStream);
+			snd.voiceLines.resize(cVoiceLines);
+			for(auto i = 0; i < cVoiceLines; ++i)
+				parseVoiceLine(snd.voiceLines[i], cLanguages);
+
+
+			const auto cMusic = readLiteral<i32>(*brxStream);
+			snd.music.resize(cMusic);
+			for(auto i = 0; i < cMusic; ++i) {
+				snd.music[i].unk = readLiteral<i16>(*brxStream);
+				snd.music[i].musicFile = readLocation(*brxStream, fs);
+			}
+		} catch(ShortRead&) {
+			return false;
+		}
+
+		return true;
+	}
+
 	bool Parser::parseAll(BrxData& data) {
 		if(!parseProxyTable(data))
 			return false;
-
+		if(!parseSoundData(data))
+			return false;
 		return true;
 	}
 

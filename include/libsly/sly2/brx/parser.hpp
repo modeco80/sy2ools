@@ -25,6 +25,7 @@ namespace sly::sly2 {
 			// can move out the data it wants out of the BrxData struct or only use that data.
 
 			bool parseProxyTable(BrxData& data);
+			bool parseSoundData(BrxData& data);
 
 		   public:
 			// helper which opens from a IArchiveFileSystem instance

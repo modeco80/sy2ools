@@ -20,6 +20,11 @@ int main(int argc, char** argv) {
 		printf("%32s %d %d %d %d %d\n", proxyent.name, proxyent.unk1, proxyent.unk2, proxyent.oid, proxyent.unk4, proxyent.unk5);
 	}
 
+	for(auto& voent : data.sound.voiceLines) {
+		auto tmp = voent.lineFiles[0].vagLocation.toString();
+		printf("voiceline = %s\n", tmp.c_str());
+	}
+
 	printf("parsed it!\n");
 	return 0;
 }
