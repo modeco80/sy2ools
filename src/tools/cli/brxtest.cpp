@@ -29,6 +29,10 @@ int main(int argc, char** argv) {
 		printf("save hash %s = %d\n", ent.key.c_str(), ent.value);
 	}
 
+	for(auto& ent : data.worldTable.worlds) {
+		auto tmp = ent.locBrx.toString();
+		printf("WorldTable %s\n", tmp.c_str());
+	}
 
 	printf("parsed it!\n");
 	return 0;

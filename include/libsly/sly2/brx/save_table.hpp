@@ -1,7 +1,7 @@
 #pragma once
-#include <vector>
-#include <string>
 #include <mco/base_types.hpp>
+#include <string>
+#include <vector>
 
 namespace sly::sly2::brx {
 
@@ -24,4 +24,4 @@ namespace sly::sly2::brx {
 		std::vector<UnkEntry> unkTable;
 	};
 
-}
+} // namespace sly::sly2::brx

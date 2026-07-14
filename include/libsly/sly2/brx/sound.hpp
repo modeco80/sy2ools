@@ -1,8 +1,8 @@
 #pragma once
-#include <optional>
-#include <mco/base_types.hpp>
-#include <vector>
 #include <libsly/sly2/file_location.hpp>
+#include <mco/base_types.hpp>
+#include <optional>
+#include <vector>
 
 namespace sly::sly2::brx {
 

@@ -27,6 +27,7 @@ namespace sly::sly2 {
 			bool parseProxyTable(BrxData& data);
 			bool parseSoundData(BrxData& data);
 			bool parseSaveTable(BrxData& data);
+			bool parseWorldTable(BrxData& data);
 
 		   public:
 			// helper which opens from a IArchiveFileSystem instance

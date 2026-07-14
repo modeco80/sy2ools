@@ -1,5 +1,6 @@
 #include <libsly/sly2/iso_filemapping.hpp>
 #include <libsly/sly2/release.hpp>
+
 #include "libsly/sly2/archive_filesystem.hpp"
 
 namespace sly::sly2 {
@@ -33,8 +34,6 @@ BEGIN_NAME_MAPPING_TABLE(NtscU, Release)
 	NAME_BY_FID(19, FileKind::PssMovie, "unk13"),
 	NAME_BY_FID(20, FileKind::PssMovie, "unk14"),
 	NAME_BY_FID(21, FileKind::PssMovie, "unk15"),
-	NAME_BY_FID(22, FileKind::PssMovie, "unk16"),
-	NAME_BY_FID(23, FileKind::PssMovie, "unk17"),
 	NAME_BY_FID(24, FileKind::PssMovie, "splash"),
 	NAME_BY_FID(25, FileKind::BrxWorld, "jb_intro"),
 	NAME_BY_FID(26, FileKind::IconMemcard, "memcard_icon"),

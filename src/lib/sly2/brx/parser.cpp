@@ -33,7 +33,7 @@ namespace sly::sly2::brx {
 		return ret;
 	}
 
-	template<class TCountInt, class Out, class FnRead>
+	template <class TCountInt, class Out, class FnRead>
 	void readArray(mco::Stream& stream, std::vector<Out>& array, FnRead&& doRead) {
 		const auto nCount = readLiteral<TCountInt>(stream);
 		array.resize(nCount);
@@ -101,7 +101,6 @@ namespace sly::sly2::brx {
 		return true;
 	}
 
-
 	bool Parser::parseSoundData(BrxData& data) {
 		auto& snd = data.sound;
 
@@ -159,7 +158,6 @@ namespace sly::sly2::brx {
 			for(auto i = 0; i < cVoiceLines; ++i)
 				parseVoiceLine(snd.voiceLines[i], cLanguages);
 
-
 			const auto cMusic = readLiteral<i32>(*brxStream);
 			snd.music.resize(cMusic);
 			for(auto i = 0; i < cMusic; ++i) {
@@ -200,12 +198,41 @@ namespace sly::sly2::brx {
 		return true;
 	}
 
+	bool Parser::parseWorldTable(BrxData& data) {
+		auto& worldTable = data.worldTable;
+
+		try {
+			const auto cWorlds = readLiteral<u32>(*brxStream);
+			worldTable.worlds.resize(cWorlds);
+
+			worldTable.unk = readLiteral<u32>(*brxStream);
+
+			for(auto i = 0; i < cWorlds; ++i) {
+				worldTable.worlds[i].locBrx = readLocation(*brxStream, fs);
+				worldTable.worlds[i].unk1 = readLiteral<u8>(*brxStream);
+				worldTable.worlds[i].unk2 = readLiteral<u8>(*brxStream);
+				worldTable.worlds[i].unk3 = readLiteral<u8>(*brxStream);
+
+				const auto cUnk = readLiteral<u8>(*brxStream);
+				worldTable.worlds[i].unk.resize(cUnk);
+				for(auto j = 0; j < cUnk; ++j)
+					worldTable.worlds[i].unk[j] = readLiteral<i16>(*brxStream);
+			}
+		} catch(ShortRead&) {
+			return false;
+		}
+
+		return true;
+	}
+
 	bool Parser::parseAll(BrxData& data) {
 		if(!parseProxyTable(data))
 			return false;
 		if(!parseSoundData(data))
 			return false;
 		if(!parseSaveTable(data))
+			return false;
+		if(!parseWorldTable(data))
 			return false;
 		return true;
 	}
