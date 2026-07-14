@@ -1,12 +1,14 @@
 #include <libsly/sly2/iso_filemapping.hpp>
 #include <libsly/sly2/release.hpp>
 
+#include "fk_utils.hpp"
+
 #include "isomappings/ntscu_retail.hpp"
 
 namespace sly::sly2 {
 
 	void NameMappingTableEntry::makeFkString(char* pszOut, usize length) const {
-		std::snprintf(&pszOut[0], length, "FK$%c%s", static_cast<char>(fk), pszFileName);
+		makeFkSearchName(pszOut, length, fk, pszFileName);
 	}
 
 	const ReleaseCdDataTable* getCdDataForRelease(Release release) {

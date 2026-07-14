@@ -1,4 +1,4 @@
-//! Utilities for parsing wal FK$ lookup strings.
+//! Utilities for parsing & creating wal FK$ lookup strings.
 #pragma once
 
 #include <libsly/sly2/archive_filesystem.hpp>
@@ -17,5 +17,8 @@ namespace sly::sly2 {
 
 	/// Gets the search name (file name, essentially) of a FK$ lookup.
 	const char* getFkSearchName(const char* pszInput);
+
+	/// Creates a FK$ search name.
+	void makeFkSearchName(char* pszOutput, usize length, FileKind fk, const char* pszName);
 
 } // namespace sly::sly2

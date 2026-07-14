@@ -39,4 +39,8 @@ namespace sly::sly2 {
 		return pszInput + (sFkPrefixSize + 1);
 	}
 
+	void makeFkSearchName(char* pszOutput, usize length, FileKind fk, const char* pszName) {
+		std::snprintf(&pszOutput[0], length, "FK$%c%s", static_cast<char>(fk), pszName);
+	}
+
 } // namespace sly::sly2
