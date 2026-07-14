@@ -2,6 +2,7 @@
 
 #include <libsly/sly2/brx/proxy_table.hpp>
 #include <libsly/sly2/brx/sound.hpp>
+#include <libsly/sly2/brx/save_table.hpp>
 #include <vector>
 
 namespace sly::sly2::brx {
@@ -10,6 +11,7 @@ namespace sly::sly2::brx {
 	struct BrxData {
 		std::vector<ProxyTableEntry> proxyTable;
 		SoundData sound;
+		SaveTableData save;
 	};
 
 } // namespace sly::sly2::brx

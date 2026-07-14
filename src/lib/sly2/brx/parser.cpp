@@ -173,10 +173,39 @@ namespace sly::sly2::brx {
 		return true;
 	}
 
+	bool Parser::parseSaveTable(BrxData& data) {
+		auto& save = data.save;
+		try {
+			const auto cHashTable = readLiteral<u16>(*brxStream);
+			save.hashTableEntries.resize(cHashTable);
+			for(auto i = 0; i < cHashTable; ++i) {
+				save.hashTableEntries[i].value = readLiteral<u16>(*brxStream);
+				save.hashTableEntries[i].key = readSwString(*brxStream);
+			}
+
+			const auto cUnkTable = readLiteral<u16>(*brxStream);
+			save.unkTable.resize(cUnkTable);
+			for(auto i = 0; i < cUnkTable; ++i) {
+				save.unkTable[i].m1 = readLiteral<i16>(*brxStream);
+				save.unkTable[i].m2 = readLiteral<u8>(*brxStream);
+				save.unkTable[i].m3 = readLiteral<u8>(*brxStream);
+				save.unkTable[i].m4 = readLiteral<i16>(*brxStream);
+				save.unkTable[i].m5 = readLiteral<i16>(*brxStream);
+				save.unkTable[i].m6 = readLiteral<i16>(*brxStream);
+			}
+		} catch(ShortRead&) {
+			return false;
+		}
+
+		return true;
+	}
+
 	bool Parser::parseAll(BrxData& data) {
 		if(!parseProxyTable(data))
 			return false;
 		if(!parseSoundData(data))
+			return false;
+		if(!parseSaveTable(data))
 			return false;
 		return true;
 	}

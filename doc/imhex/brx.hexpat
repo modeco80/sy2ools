@@ -111,16 +111,12 @@ namespace CSaveTable {
 	};
 
 	struct Unkentry {
-		u8 unk1;
-		u8 unk2;
-		u8 unk3;
-		u8 unk4;
-		u8 unk5;
-		u8 unk6;
-		u8 unk7;
-		u8 unk8;
-		u8 unk9;
-		u8 unka;
+		s16 m1;
+		u8 m2;
+		u8 m3;
+		s16 m4;
+		s16 m5;
+		s16 m6;
 	};
 
 	struct Root {

@@ -25,6 +25,11 @@ int main(int argc, char** argv) {
 		printf("voiceline = %s\n", tmp.c_str());
 	}
 
+	for(auto& ent : data.save.hashTableEntries) {
+		printf("save hash %s = %d\n", ent.key.c_str(), ent.value);
+	}
+
+
 	printf("parsed it!\n");
 	return 0;
 }
