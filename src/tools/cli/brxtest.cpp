@@ -1,5 +1,3 @@
-#include <libsly/sly2/brx/data.hpp>
-#include <libsly/sly2/brx/object.hpp>
 #include <libsly/sly2/brx/parser.hpp>
 #include <libsly/sly2/iso_filesystem.hpp>
 
@@ -80,8 +78,8 @@ int main(int argc, char** argv) {
 	}
 #endif
 
-	dumpOptions(data.worldObject);
-	dumpOptions(data.cameraObject);
+	dumpOptions(*data.worldObject);
+	dumpOptions(*data.cameraObject);
 
 	printf("parsed it!\n");
 	return 0;

@@ -293,6 +293,7 @@ namespace sly::sly2::brx {
 			const auto* desc = optionMap->find(id);
 
 			if(desc == nullptr) {
+				printf("unmapped option %02x\n", id);
 				return false;
 			}
 
@@ -306,8 +307,11 @@ namespace sly::sly2::brx {
 	}
 
 	bool Parser::parseAll(BrxData& data) {
-		data.worldObject.name = "WORLD";
-		data.cameraObject.name = "CAMERA";
+		data.worldObject = std::make_unique<Object>();
+		data.worldObject->name = "WORLD";
+
+		data.cameraObject = std::make_unique<Object>();
+		data.cameraObject->name = "CAMERA";
 
 		if(!parseProxyTable(data))
 			return false;
@@ -322,12 +326,10 @@ namespace sly::sly2::brx {
 		if(!parseUnkBsp(data))
 			return false;
 
-		// World object options
-		if(!parseOptions(data.worldObject.options))
+		// Parse world objects
+		if(!data.worldObject->parse(*this))
 			return false;
-
-		// Camera object options
-		if(!parseOptions(data.cameraObject.options))
+		if(!data.cameraObject->parse(*this))
 			return false;
 
 		return true;

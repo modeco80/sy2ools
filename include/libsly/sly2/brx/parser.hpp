@@ -1,8 +1,7 @@
 #pragma once
 #include <libsly/core/sly_lz_stream.hpp>
 #include <libsly/sly2/archive_filesystem.hpp>
-#include <libsly/sly2/brx/data.hpp>
-#include <libsly/sly2/brx/object.hpp>
+#include <libsly/sly2/brx/data/data.hpp>
 #include <libsly/sly2/brx/option.hpp>
 #include <libsly/sly2/file_location.hpp>
 

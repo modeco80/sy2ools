@@ -24,7 +24,7 @@ namespace sly::sly2::brx {
 	// The option map solves a bit of an interesting.. "problem". Different builds of
 	// Sly 2 may have different option indicies. However, the option data type itself
 	// may not actually differ. Therefore, we use this OptionDescriptor/OptionMap structure
-	// to actually do so.
+	// to actually map option indicies to option descriptor structs.
 // clang-format off
 
 	BEGIN_OPTION_MAP(NtscU, Release)

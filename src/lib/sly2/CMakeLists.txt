@@ -14,6 +14,7 @@ add_library(libsly_sly2
 	brx/parser.cpp
 	brx/options.cpp
 	brx/option.cpp
+	brx/objects/object.cpp
 )
 target_link_libraries(libsly_sly2 PUBLIC
 	mco::base
