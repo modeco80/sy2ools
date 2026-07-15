@@ -1,5 +1,6 @@
 #pragma once
 #include <libsly/sly2/file_location.hpp>
+#include <libsly/sly2/release.hpp>
 #include <mco/io/stream.hpp>
 #include <vector>
 
@@ -41,6 +42,8 @@ namespace sly::sly2 {
 		virtual ArchiveKind getKind() const {
 			return DefaultArchiveKind;
 		}
+
+		virtual Release getRelease() const = 0;
 
 		virtual void enumFilesImpl(bool (*pcb)(const char* pszFileName, u32 size, void* user), void* user) const = 0;
 

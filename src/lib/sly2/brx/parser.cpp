@@ -1,63 +1,10 @@
 #include <libsly/sly2/brx/parser.hpp>
 #include <libsly/sly2/iso_filesystem.hpp>
 
+#include "io_utils.hpp"
+#include "options.hpp"
+
 namespace sly::sly2::brx {
-
-	// IO helpers
-	// TODO: might be useful in another file.
-
-	class ShortRead : public std::exception {
-	   public:
-		const char* what() const noexcept override {
-			return "short read";
-		}
-	};
-
-	void readAll(mco::Stream& stream, void* pBuf, usize count) {
-		if(stream.read(pBuf, count) != count)
-			throw ShortRead();
-	}
-
-	template <class T>
-	T readLiteral(mco::Stream& stream) {
-		T item;
-		readAll(stream, &item, sizeof(T));
-		return item;
-	}
-
-	std::string readSwString(mco::Stream& stream) {
-		std::string ret;
-		const auto nStringLen = readLiteral<i16>(stream);
-		ret.resize(nStringLen);
-		readAll(stream, &ret[0], nStringLen);
-		return ret;
-	}
-
-	template <class TCountInt, class Out, class FnRead>
-	void readArray(mco::Stream& stream, std::vector<Out>& array, FnRead&& doRead) {
-		const auto nCount = readLiteral<TCountInt>(stream);
-		array.resize(nCount);
-		for(usize i = 0; i < nCount; ++i)
-			doRead(stream, array[i]);
-	}
-
-	FileLocation readLocation(mco::Stream& stream, IArchiveFileSystem& fs) {
-		if(fs.getKind() == IsoFileSystem::Kind) {
-			auto& isoFs = reinterpret_cast<IsoFileSystem&>(fs);
-			CdCatalogEntry catEnt;
-			readAll(stream, &catEnt, sizeof(CdCatalogEntry));
-
-			// IsoFileSystem contains a helper method to map CD catalogs back to
-			// FK$ if it knows about them, so use it. This allows locations read here
-			// to become FK$ as soon as the mappings are updated, which is pretty cool.
-			return isoFs.mapCatalogEntryToName(catEnt);
-		} else {
-			// FK$ lookup string.
-			char bufLoc[0x40] {};
-			readAll(stream, &bufLoc[0], sizeof(bufLoc));
-			return FileLocation(bufLoc);
-		}
-	}
 
 	Parser::Parser(IArchiveFileSystem& fs, const FileLocation& loc)
 		: fs(fs) {
@@ -66,6 +13,11 @@ namespace sly::sly2::brx {
 		brxRawStream = fs.openFile(loc);
 		if(brxRawStream == nullptr) {
 			throw std::runtime_error("Could not open BRX from given IArchiveFileSystem implementation.");
+		}
+
+		optionMap = getOptionMapForRelease(fs.getRelease());
+		if(optionMap == nullptr) {
+			throw std::runtime_error("Option map is nullptr? How?");
 		}
 
 		// Create the LZ decompression stream on top of the raw file stream.
@@ -225,7 +177,6 @@ namespace sly::sly2::brx {
 		return true;
 	}
 
-
 	bool Parser::parseText(BrxData& data) {
 		auto& text = data.text;
 
@@ -251,7 +202,46 @@ namespace sly::sly2::brx {
 		return true;
 	}
 
-	bool Parser::parseAll(BrxData& data) {
+	bool Parser::parseOption(const OptionDescriptor* option, OptionValue& reciever) {
+		switch(option->type) {
+			case OptionType::Wid: {
+				auto wid = readLiteral<i16>(*brxStream);
+				reciever = OptionValue(wid);
+				return true;
+			};
+
+			default:
+				printf("unhandled type %02x!!\n", option->type);
+				return false;
+		}
+	}
+
+	bool Parser::parseOptions(OptionList& options) {
+		while(true) {
+			auto id = readLiteral<i16>(*brxStream);
+			// End of the options list.
+			if(id < 0)
+				break;
+
+			const auto* desc = optionMap->find(id);
+
+			if(desc == nullptr) {
+				printf("Unmapped option 0x%02x!!!\n", id);
+				return false;
+			}
+
+			OptionValue value;
+			if(!parseOption(desc, value))
+				return false;
+
+			options.addOption(desc, value);
+		}
+		return true;
+	}
+
+	bool Parser::parseAll(Object& worldObject, BrxData& data) {
+		worldObject.name = "WORLD";
+
 		if(!parseProxyTable(data))
 			return false;
 		if(!parseSoundData(data))
@@ -262,6 +252,12 @@ namespace sly::sly2::brx {
 			return false;
 		if(!parseText(data))
 			return false;
+
+		// Parse world object options
+		//if(!parseOptions(worldObject.options)) {
+		//	return false;
+		//}
+
 		return true;
 	}
 

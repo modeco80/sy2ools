@@ -44,7 +44,7 @@ namespace sly::sly2 {
 		IsoFileSystem(IsoFileSystem&&) = delete; // for now?
 		~IsoFileSystem();
 
-		Release getRelease() const;
+		Release getRelease() const override;
 
 		/// Maps a CD catalog entry to an WAL FK$ search string.
 		///

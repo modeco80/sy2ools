@@ -1,4 +1,5 @@
 #include <libsly/sly2/brx/data.hpp>
+#include <libsly/sly2/brx/object.hpp>
 #include <libsly/sly2/brx/parser.hpp>
 #include <libsly/sly2/iso_filesystem.hpp>
 
@@ -7,13 +8,16 @@ int main(int argc, char** argv) {
 	auto isofs = sly::sly2::IsoFileSystem(std::move(fs));
 
 	sly::sly2::brx::BrxData data;
+	sly::sly2::brx::Object worldObject;
 
 	// Load the intro BRX
 	auto parser = sly::sly2::brx::Parser(isofs, sly::sly2::FileLocation("FK$Zjb_intro"));
 
-	if(!parser.parseAll(data)) {
+	if(!parser.parseAll(worldObject, data)) {
 		printf("failed to parse brx\n");
 	}
+
+#if 0
 
 	for(auto& proxyent : data.proxyTable) {
 		printf("%32s %d %d %d %d %d\n", proxyent.name, proxyent.unk1, proxyent.unk2, proxyent.oid, proxyent.unk4, proxyent.unk5);
@@ -36,7 +40,7 @@ int main(int argc, char** argv) {
 	for(auto& str : data.text.stringTable) {
 		printf("string id %04x = %s\n", str.stringId, str.strings[0].c_str());
 	}
-
+#endif
 	printf("parsed it!\n");
 	return 0;
 }

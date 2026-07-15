@@ -2,14 +2,18 @@
 #include <libsly/core/sly_lz_stream.hpp>
 #include <libsly/sly2/archive_filesystem.hpp>
 #include <libsly/sly2/brx/data.hpp>
+#include <libsly/sly2/brx/object.hpp>
+#include <libsly/sly2/brx/option.hpp>
 #include <libsly/sly2/file_location.hpp>
 
 namespace sly::sly2 {
 	namespace brx {
+		struct OptionMap;
 
 		/// BRX level parser.
 		class Parser {
 			IArchiveFileSystem& fs;
+			const OptionMap* optionMap;
 			mco::Stream* brxRawStream;
 			std::unique_ptr<sly::core::SlyLzStream> brxStream;
 
@@ -35,8 +39,13 @@ namespace sly::sly2 {
 			Parser(IArchiveFileSystem& fs, const FileLocation& loc);
 			~Parser();
 
+			// TODO (unfortunately): mco::Stream& getStream() const;
+
+			bool parseOption(const OptionDescriptor* option, OptionValue& reciever);
+			bool parseOptions(OptionList& options);
+
 			/// Parses all data out of the brx level..
-			bool parseAll(BrxData& data);
+			bool parseAll(Object& worldObject, BrxData& data);
 		};
 
 	} // namespace brx

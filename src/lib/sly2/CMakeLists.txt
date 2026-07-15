@@ -10,7 +10,10 @@ add_library(libsly_sly2
 	iso_filesystem.cpp
 
 	# brx
+	brx/io_utils.cpp
 	brx/parser.cpp
+	brx/options.cpp
+	brx/option.cpp
 )
 target_link_libraries(libsly_sly2 PUBLIC
 	mco::base

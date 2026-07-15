@@ -1,0 +1,121 @@
+#pragma once
+#include <libsly/sly2/vector.hpp>
+#include <mco/base_types.hpp>
+#include <mco/io/stream.hpp>
+#include <vector>
+
+namespace sly::sly2::brx {
+#define LIBSLY_OPTION_TYPES()          \
+	X(Bool, 0, bool, boolVal)          \
+	X(Float, 1, float, floatVal)       \
+	X(Vector, 2, sly2::Vector, vecVal) \
+	X(Wid, 0xf, i16, widVal)
+
+	enum class OptionType : u32 {
+#define X(key, value, _T, _member) \
+	key = value,
+		LIBSLY_OPTION_TYPES()
+#undef X
+	};
+
+	namespace impl {
+
+		template <class T>
+		struct TypeToOptionType {};
+
+#define OPTION_TYPE_MAPPING(otyp, T)                  \
+	template <>                                       \
+	struct TypeToOptionType<T> {                      \
+		constexpr static auto Opt = OptionType::otyp; \
+	}
+
+		OPTION_TYPE_MAPPING(Float, float);
+		OPTION_TYPE_MAPPING(Vector, sly2::Vector);
+
+#undef OPTION_TYPE_MAPPING
+
+		template <class T>
+		constexpr inline static auto TypeToOptionTypeT = TypeToOptionType<T>::Opt;
+
+		class OptionValue {
+			OptionType type;
+			union {
+#define X(_k, _v, T, member) \
+	struct {                 \
+		T member;            \
+	};
+				LIBSLY_OPTION_TYPES()
+#undef X
+			};
+
+		   public:
+			OptionValue();
+
+#define X(_k, _v, T, _m) \
+	OptionValue(T value);
+			LIBSLY_OPTION_TYPES()
+#undef X
+
+			OptionValue(const OptionValue&);
+
+			constexpr bool matchesType(OptionType type) const {
+				return this->type == type;
+			}
+
+			template <class T>
+			constexpr bool matchesType() const {
+				return matchesType(TypeToOptionTypeT<T>);
+			}
+
+			template <class T>
+			constexpr auto& get() const {
+				if(!matchesType<T>())
+					throw std::runtime_error("Invalid type lookup!!");
+
+#define X(key, _v, _, member)   \
+	if(type == OptionType::key) \
+		return member;
+				LIBSLY_OPTION_TYPES()
+#undef X
+			}
+		};
+
+	} // namespace impl
+
+	using impl::OptionValue;
+
+	struct OptionDescriptor {
+		const char* pszName;
+		bool bSpliceCall; // splice option calls are included in the opid lists.
+		OptionType type;
+		// TODO w/ splice options:
+		// - call
+		// - get
+		// - set
+	};
+
+	/// Holds a list of options and their data.
+	class OptionList {
+	   public:
+		struct Entry {
+			const OptionDescriptor* pOptionDescriptor;
+			OptionValue value;
+		};
+
+	   private:
+		std::vector<Entry> entries;
+
+	   public:
+		void addOption(const OptionDescriptor* option, const OptionValue& value);
+
+		// TODO for editing/cleaner support
+		// - removeOption(u32 index);
+		// - enumerateOptions() (enumerates all options on the object)
+
+		const usize getOptionCount() const;
+
+		/// Gets an option at the provided index.
+		const Entry* getOption(usize index) const;
+	};
+
+} // namespace sly::sly2::brx
