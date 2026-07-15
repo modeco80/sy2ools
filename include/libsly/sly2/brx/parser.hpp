@@ -33,6 +33,7 @@ namespace sly::sly2 {
 			bool parseSaveTable(BrxData& data);
 			bool parseWorldTable(BrxData& data);
 			bool parseText(BrxData& data);
+			bool parseUnkBsp(BrxData& data);
 
 		   public:
 			// helper which opens from a IArchiveFileSystem instance
@@ -45,7 +46,7 @@ namespace sly::sly2 {
 			bool parseOptions(OptionList& options);
 
 			/// Parses all data out of the brx level..
-			bool parseAll(Object& worldObject, BrxData& data);
+			bool parseAll(BrxData& data);
 		};
 
 	} // namespace brx

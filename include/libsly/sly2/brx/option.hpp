@@ -1,4 +1,5 @@
 #pragma once
+#include <libsly/sly2/brx/types.hpp>
 #include <libsly/sly2/vector.hpp>
 #include <mco/base_types.hpp>
 #include <mco/io/stream.hpp>
@@ -9,13 +10,16 @@ namespace sly::sly2::brx {
 	X(Bool, 0, bool, boolVal)          \
 	X(Float, 1, float, floatVal)       \
 	X(Vector, 2, sly2::Vector, vecVal) \
-	X(Wid, 0xf, i16, widVal)
+	X(Smpa, 0xc, SmoothingParameters, smpaVal) \
+	X(Rgba, 0xd, Rgba, rgbaVal) \
+	X(Wid, 0xf, Wid, widVal)
 
 	enum class OptionType : u32 {
 #define X(key, value, _T, _member) \
 	key = value,
 		LIBSLY_OPTION_TYPES()
 #undef X
+		Void = 0x12,
 	};
 
 	namespace impl {
@@ -29,8 +33,10 @@ namespace sly::sly2::brx {
 		constexpr static auto Opt = OptionType::otyp; \
 	}
 
-		OPTION_TYPE_MAPPING(Float, float);
-		OPTION_TYPE_MAPPING(Vector, sly2::Vector);
+#define X(kind, _, T, __) \
+		OPTION_TYPE_MAPPING(kind, T);
+		LIBSLY_OPTION_TYPES()
+#undef X
 
 #undef OPTION_TYPE_MAPPING
 
@@ -57,6 +63,7 @@ namespace sly::sly2::brx {
 #undef X
 
 			OptionValue(const OptionValue&);
+			// move ctor? or would that not be worth the pain
 
 			constexpr bool matchesType(OptionType type) const {
 				return this->type == type;
@@ -72,8 +79,8 @@ namespace sly::sly2::brx {
 				if(!matchesType<T>())
 					throw std::runtime_error("Invalid type lookup!!");
 
-#define X(key, _v, _, member)   \
-	if(type == OptionType::key) \
+#define X(_key, _v, type, member)         \
+	if constexpr(std::is_same_v<T, type>) \
 		return member;
 				LIBSLY_OPTION_TYPES()
 #undef X

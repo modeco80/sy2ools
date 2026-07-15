@@ -11,7 +11,7 @@ namespace sly::sly2::brx {
 		OptionList options;
 
 		// Parse into this object. TODO
-		// virtual bool parse(Parser& parser);
+		//virtual bool parse(Parser& parser);
 	};
 
 } // namespace sly::sly2::brx

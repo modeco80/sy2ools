@@ -202,17 +202,84 @@ namespace sly::sly2::brx {
 		return true;
 	}
 
-	bool Parser::parseOption(const OptionDescriptor* option, OptionValue& reciever) {
-		switch(option->type) {
-			case OptionType::Wid: {
-				auto wid = readLiteral<i16>(*brxStream);
-				reciever = OptionValue(wid);
-				return true;
-			};
 
-			default:
-				printf("unhandled type %02x!!\n", option->type);
-				return false;
+	bool Parser::parseUnkBsp(BrxData& data) {
+		auto& unkBsp = data.unkBspData;
+
+		try {
+			const auto cEntries = readLiteral<i16>(*brxStream);
+			unkBsp.entries.resize(cEntries);
+			for(auto i = 0; i < cEntries; ++i) {
+				unkBsp.entries[i].f1 = readLiteral<float>(*brxStream);
+				unkBsp.entries[i].f2 = readLiteral<float>(*brxStream);
+				unkBsp.entries[i].f3 = readLiteral<float>(*brxStream);
+				unkBsp.entries[i].f4 = readLiteral<float>(*brxStream);
+				const auto backlink = readLiteral<i16>(*brxStream);
+				if(backlink > 0) {
+					unkBsp.entries[i].linkleft = &unkBsp.entries[backlink];
+				}
+
+				const auto frontlink = readLiteral<i16>(*brxStream);
+				if(frontlink > 0) {
+					unkBsp.entries[i].linkright = &unkBsp.entries[frontlink];
+				}
+			}
+		} catch(ShortRead&) {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool Parser::parseOption(const OptionDescriptor* option, OptionValue& reciever) {
+		try {
+			switch(option->type) {
+				case OptionType::Bool: {
+					auto bVal = readLiteral<u8>(*brxStream);
+					reciever = OptionValue(static_cast<bool>(bVal));
+					return true;
+				};
+
+				case OptionType::Float: {
+					auto fVal = readLiteral<float>(*brxStream);
+					reciever = OptionValue(fVal);
+					return true;
+				};
+
+				case OptionType::Vector: {
+					auto vVal = readLiteral<sly2::Vector>(*brxStream);
+					reciever = OptionValue(vVal);
+					return true;
+				};
+
+				case OptionType::Smpa: {
+					reciever = OptionValue(readLiteral<SmoothingParameters>(*brxStream));
+					return true;
+				};
+
+				case OptionType::Rgba: {
+					reciever = OptionValue(readLiteral<Rgba>(*brxStream));
+					return true;
+				};
+
+
+				case OptionType::Wid: {
+					auto wid = readLiteral<Wid>(*brxStream);
+					reciever = OptionValue(wid);
+					return true;
+				};
+
+
+				// don't think we need to do anything for this
+				case OptionType::Void:
+					reciever = OptionValue();
+					return true;
+
+				default:
+					return false;
+			}
+		} catch(ShortRead&) {
+			return false;
 		}
 	}
 
@@ -226,7 +293,6 @@ namespace sly::sly2::brx {
 			const auto* desc = optionMap->find(id);
 
 			if(desc == nullptr) {
-				printf("Unmapped option 0x%02x!!!\n", id);
 				return false;
 			}
 
@@ -239,8 +305,9 @@ namespace sly::sly2::brx {
 		return true;
 	}
 
-	bool Parser::parseAll(Object& worldObject, BrxData& data) {
-		worldObject.name = "WORLD";
+	bool Parser::parseAll(BrxData& data) {
+		data.worldObject.name = "WORLD";
+		data.cameraObject.name = "CAMERA";
 
 		if(!parseProxyTable(data))
 			return false;
@@ -252,11 +319,16 @@ namespace sly::sly2::brx {
 			return false;
 		if(!parseText(data))
 			return false;
+		if(!parseUnkBsp(data))
+			return false;
 
-		// Parse world object options
-		//if(!parseOptions(worldObject.options)) {
-		//	return false;
-		//}
+		// World object options
+		if(!parseOptions(data.worldObject.options))
+			return false;
+
+		// Camera object options
+		if(!parseOptions(data.cameraObject.options))
+			return false;
 
 		return true;
 	}
