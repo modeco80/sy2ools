@@ -225,6 +225,32 @@ namespace sly::sly2::brx {
 		return true;
 	}
 
+
+	bool Parser::parseText(BrxData& data) {
+		auto& text = data.text;
+
+		try {
+			const auto cLanguages = readLiteral<u8>(*brxStream);
+			text.languageIds.resize(cLanguages);
+			for(auto i = 0; i < cLanguages; ++i) {
+				text.languageIds[i] = readLiteral<u8>(*brxStream);
+			}
+
+			const auto cStrings = readLiteral<i16>(*brxStream);
+			text.stringTable.resize(cStrings);
+			for(auto i = 0; i < cStrings; ++i) {
+				text.stringTable[i].stringId = readLiteral<i16>(*brxStream);
+				text.stringTable[i].strings.resize(cLanguages);
+				for(auto j = 0; j < cLanguages; ++j)
+					text.stringTable[i].strings[j] = readSwString(*brxStream);
+			}
+		} catch(ShortRead&) {
+			return false;
+		}
+
+		return true;
+	}
+
 	bool Parser::parseAll(BrxData& data) {
 		if(!parseProxyTable(data))
 			return false;
@@ -233,6 +259,8 @@ namespace sly::sly2::brx {
 		if(!parseSaveTable(data))
 			return false;
 		if(!parseWorldTable(data))
+			return false;
+		if(!parseText(data))
 			return false;
 		return true;
 	}

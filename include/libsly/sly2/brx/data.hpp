@@ -4,6 +4,7 @@
 #include <libsly/sly2/brx/save_table.hpp>
 #include <libsly/sly2/brx/sound.hpp>
 #include <libsly/sly2/brx/world_table.hpp>
+#include <libsly/sly2/brx/text.hpp>
 #include <vector>
 
 namespace sly::sly2::brx {
@@ -14,6 +15,7 @@ namespace sly::sly2::brx {
 		SoundData sound;
 		SaveTableData save;
 		WorldTable worldTable;
+		Text text;
 	};
 
 } // namespace sly::sly2::brx

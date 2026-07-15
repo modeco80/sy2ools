@@ -33,6 +33,10 @@ int main(int argc, char** argv) {
 		printf("WorldTable %s\n", tmp.c_str());
 	}
 
+	for(auto& str : data.text.stringTable) {
+		printf("string id %04x = %s\n", str.stringId, str.strings[0].c_str());
+	}
+
 	printf("parsed it!\n");
 	return 0;
 }

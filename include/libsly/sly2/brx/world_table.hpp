@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <libsly/sly2/file_location.hpp>
