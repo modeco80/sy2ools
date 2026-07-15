@@ -141,4 +141,11 @@ namespace sly::core {
 		return readFromDecompressionBuffer(static_cast<u8*>(buffer), length);
 	}
 
+	void SlyLzStream::align(i32 by) {
+		decompressBufferConsumed = (decompressBufferConsumed + (by-1) & -by);
+		// probably should throw
+		if(decompressBufferConsumed > decompressBufferProduced)
+			decompressBufferConsumed = decompressBufferProduced;
+	}
+
 } // namespace sly::core

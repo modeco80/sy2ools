@@ -58,6 +58,8 @@ namespace sly::core {
 		bool isRandomAccess() const noexcept override;
 
 		u64 read(void* buffer, u64 length) override;
+
+		void align(i32 by);
 	};
 
 } // namespace sly::core
