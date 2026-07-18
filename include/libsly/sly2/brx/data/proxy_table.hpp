@@ -4,7 +4,7 @@
 namespace sly::sly2::brx {
 
 	struct ProxyTableEntry {
-		char name[0x40]; // Wal OID/entity name
+		std::string name; // Wal OID/entity name
 		i32 unk1;
 		i32 unk2;
 		i32 oid;

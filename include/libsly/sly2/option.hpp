@@ -1,17 +1,19 @@
 #pragma once
-#include <libsly/sly2/brx/types.hpp>
+#include <libsly/sly2/types.hpp>
 #include <libsly/sly2/vector.hpp>
 #include <mco/base_types.hpp>
 #include <mco/io/stream.hpp>
 #include <vector>
 
-namespace sly::sly2::brx {
-#define LIBSLY_OPTION_TYPES()          \
-	X(Bool, 0, bool, boolVal)          \
-	X(Float, 1, float, floatVal)       \
-	X(Vector, 2, sly2::Vector, vecVal) \
+namespace sly::sly2 {
+
+#define LIBSLY_OPTION_TYPES()                  \
+	X(Bool, 0, bool, boolVal)                  \
+	X(Float, 1, float, floatVal)               \
+	X(Vector, 2, sly2::Vector, vecVal)         \
+	X(Int, 5, i32, i32Val)                     \
 	X(Smpa, 0xc, SmoothingParameters, smpaVal) \
-	X(Rgba, 0xd, Rgba, rgbaVal) \
+	X(Rgba, 0xd, Rgba, rgbaVal)                \
 	X(Wid, 0xf, Wid, widVal)
 
 	enum class OptionType : u32 {
@@ -34,7 +36,7 @@ namespace sly::sly2::brx {
 	}
 
 #define X(kind, _, T, __) \
-		OPTION_TYPE_MAPPING(kind, T);
+	OPTION_TYPE_MAPPING(kind, T);
 		LIBSLY_OPTION_TYPES()
 #undef X
 
@@ -101,28 +103,4 @@ namespace sly::sly2::brx {
 		// - set
 	};
 
-	/// Holds a list of options and their data.
-	class OptionList {
-	   public:
-		struct Entry {
-			const OptionDescriptor* pOptionDescriptor;
-			OptionValue value;
-		};
-
-	   private:
-		std::vector<Entry> entries;
-
-	   public:
-		void addOption(const OptionDescriptor* option, const OptionValue& value);
-
-		// TODO for editing/cleaner support
-		// - removeOption(u32 index);
-		// - enumerateOptions() (enumerates all options on the object)
-
-		const usize getOptionCount() const;
-
-		/// Gets an option at the provided index.
-		const Entry* getOption(usize index) const;
-	};
-
-} // namespace sly::sly2::brx
+} // namespace sly::sly2

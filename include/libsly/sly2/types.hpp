@@ -1,7 +1,7 @@
 #pragma once
 #include <mco/base_types.hpp>
 
-namespace sly::sly2::brx {
+namespace sly::sly2 {
 
 	enum class Wid : i16 {};
 
@@ -22,4 +22,4 @@ namespace sly::sly2::brx {
 	mcoAssertSize(Rgba, 4);
 	mcoAssertSize(SmoothingParameters, 16);
 
-}
+} // namespace sly::sly2

@@ -5,6 +5,10 @@ add_library(libsly_sly2
 	release.cpp
 	fk_utils.cpp
 
+	option.cpp
+	option_list.cpp
+	options.cpp
+
 	# iso filesystem
 	iso_filemapping.cpp
 	iso_filesystem.cpp
@@ -12,9 +16,6 @@ add_library(libsly_sly2
 	# brx
 	brx/io_utils.cpp
 	brx/parser.cpp
-	brx/options.cpp
-	brx/option.cpp
-	brx/objects/object.cpp
 )
 target_link_libraries(libsly_sly2 PUBLIC
 	mco::base

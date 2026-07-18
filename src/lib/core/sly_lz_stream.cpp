@@ -142,7 +142,7 @@ namespace sly::core {
 	}
 
 	void SlyLzStream::align(i32 by) {
-		decompressBufferConsumed = (decompressBufferConsumed + (by-1) & -by);
+		decompressBufferConsumed = (decompressBufferConsumed + (by - 1) & -by);
 		// probably should throw
 		if(decompressBufferConsumed > decompressBufferProduced)
 			decompressBufferConsumed = decompressBufferProduced;

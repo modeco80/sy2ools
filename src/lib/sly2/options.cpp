@@ -1,7 +1,7 @@
 #include "options.hpp"
 
 #include <cstring>
-#include <libsly/sly2/brx/option.hpp>
+#include <libsly/sly2/option.hpp>
 
 namespace sly::sly2::brx {
 
@@ -21,11 +21,13 @@ namespace sly::sly2::brx {
 	DECLARE_OPTION(FOG_COLOR, "FOG_COLOR", false, OptionType::Rgba);
 	DECLARE_OPTION(FOG_MAX, "FOG_MAX", false, OptionType::Float);
 
+	DECLARE_OPTION(PRIORITY, "PRIORITY", false, OptionType::Int);
+
 	// The option map solves a bit of an interesting.. "problem". Different builds of
 	// Sly 2 may have different option indicies. However, the option data type itself
 	// may not actually differ. Therefore, we use this OptionDescriptor/OptionMap structure
 	// to actually map option indicies to option descriptor structs.
-// clang-format off
+	// clang-format off
 
 	BEGIN_OPTION_MAP(NtscU, Release)
 		// CCm
@@ -39,6 +41,8 @@ namespace sly::sly2::brx {
 		OPTION_MAP(168, FOG_COLOR),
 		OPTION_MAP(169, FOG_MAX),
 
+		OPTION_MAP(175, PRIORITY),
+
 		// Sw
 		OPTION_MAP(913, WID),
 		OPTION_MAP(914, SHADOW_HSV),
@@ -46,7 +50,7 @@ namespace sly::sly2::brx {
 		OPTION_MAP(916, AMBIENT_SHADOW),
 	END_OPTION_MAP(NtscU, Release);
 
-// clang-format on
+	// clang-format on
 
 	const OptionDescriptor* OptionMap::find(i16 opId) const {
 		// a meh-quality linear search.

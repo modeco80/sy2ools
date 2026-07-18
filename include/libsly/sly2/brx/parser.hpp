@@ -2,8 +2,8 @@
 #include <libsly/core/sly_lz_stream.hpp>
 #include <libsly/sly2/archive_filesystem.hpp>
 #include <libsly/sly2/brx/data/data.hpp>
-#include <libsly/sly2/brx/option.hpp>
 #include <libsly/sly2/file_location.hpp>
+#include <libsly/sly2/option.hpp>
 
 namespace sly::sly2 {
 	namespace brx {
@@ -15,6 +15,7 @@ namespace sly::sly2 {
 			const OptionMap* optionMap;
 			mco::Stream* brxRawStream;
 			std::unique_ptr<sly::core::SlyLzStream> brxStream;
+			bool loadSpliceDebugInfo;
 
 			// Parse functions.
 			//

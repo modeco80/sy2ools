@@ -1,10 +1,20 @@
+#include <cstring>
 #include <libsly/sly2/brx/parser.hpp>
 #include <libsly/sly2/iso_filesystem.hpp>
 
+#include "../fk_utils.hpp"
+#include "../options.hpp"
 #include "io_utils.hpp"
-#include "options.hpp"
 
 namespace sly::sly2::brx {
+
+	/// Safe strlen for character arrays
+	template <usize N>
+	usize arrayStrlen(char (&arr)[N]) {
+		if(arr[N - 1] != '\0')
+			return N;
+		return std::strlen(&arr[0]);
+	}
 
 	Parser::Parser(IArchiveFileSystem& fs, const FileLocation& loc)
 		: fs(fs) {
@@ -36,9 +46,11 @@ namespace sly::sly2::brx {
 
 			// Read every proxy table item.
 			for(auto i = 0; i < countProxyTable; ++i) {
+				char tmpName[0x40] {};
 				// This is supposed to be a location. However it was never mapped
 				// to a CD catalog entry, since it didn't exist in the WAL.
-				readAll(*brxStream, &data.proxyTable[i].name[0], 0x40);
+				readAll(*brxStream, &tmpName[0], 0x40);
+				data.proxyTable[i].name = std::string(&tmpName[0], arrayStrlen(tmpName));
 				data.proxyTable[i].unk1 = readLiteral<i32>(*brxStream);
 				data.proxyTable[i].unk2 = readLiteral<i32>(*brxStream);
 				data.proxyTable[i].oid = readLiteral<i32>(*brxStream);
@@ -202,7 +214,6 @@ namespace sly::sly2::brx {
 		return true;
 	}
 
-
 	bool Parser::parseUnkBsp(BrxData& data) {
 		auto& unkBsp = data.unkBspData;
 
@@ -252,6 +263,11 @@ namespace sly::sly2::brx {
 					return true;
 				};
 
+				case OptionType::Int: {
+					reciever = OptionValue(readLiteral<i32>(*brxStream));
+					return true;
+				};
+
 				case OptionType::Smpa: {
 					reciever = OptionValue(readLiteral<SmoothingParameters>(*brxStream));
 					return true;
@@ -262,13 +278,11 @@ namespace sly::sly2::brx {
 					return true;
 				};
 
-
 				case OptionType::Wid: {
 					auto wid = readLiteral<Wid>(*brxStream);
 					reciever = OptionValue(wid);
 					return true;
 				};
-
 
 				// don't think we need to do anything for this
 				case OptionType::Void:
@@ -307,12 +321,6 @@ namespace sly::sly2::brx {
 	}
 
 	bool Parser::parseAll(BrxData& data) {
-		data.worldObject = std::make_unique<Object>();
-		data.worldObject->name = "WORLD";
-
-		data.cameraObject = std::make_unique<Object>();
-		data.cameraObject->name = "CAMERA";
-
 		if(!parseProxyTable(data))
 			return false;
 		if(!parseSoundData(data))
@@ -327,10 +335,16 @@ namespace sly::sly2::brx {
 			return false;
 
 		// Parse world objects
-		if(!data.worldObject->parse(*this))
+		if(!parseOptions(data.worldOptions))
 			return false;
-		if(!data.cameraObject->parse(*this))
+		if(!parseOptions(data.cameraOptions))
 			return false;
+
+		brxStream->align(0x10);
+
+		for(auto i = 0; i < data.proxyTable.size(); ++i) {
+			printf("XXX Beginning parse of %s\n", getFkSearchName(data.proxyTable[i].name.c_str()));
+		}
 
 		return true;
 	}

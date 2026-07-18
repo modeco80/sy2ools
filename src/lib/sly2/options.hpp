@@ -1,5 +1,5 @@
 #pragma once
-#include <libsly/sly2/brx/option.hpp>
+#include <libsly/sly2/option.hpp>
 #include <libsly/sly2/release.hpp>
 #include <mco/base_types.hpp>
 
@@ -43,5 +43,8 @@ namespace sly::sly2::brx {
 	};
 
 	const OptionMap* getOptionMapForRelease(Release release);
+
+	// TODO: global find helpers which coalacese getOptionMapForRelease() then
+	// find() calls....
 
 } // namespace sly::sly2::brx

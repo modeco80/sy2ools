@@ -4,6 +4,7 @@
 
 namespace sly::sly2::brx {
 
+	// TODO: This is most likely bsp related?
 	struct UnkBspData {
 		struct Entry {
 			float f1;

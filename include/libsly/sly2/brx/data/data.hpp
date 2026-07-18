@@ -4,10 +4,10 @@
 #include <libsly/sly2/brx/data/save_table.hpp>
 #include <libsly/sly2/brx/data/sound.hpp>
 #include <libsly/sly2/brx/data/text.hpp>
-#include <libsly/sly2/brx/data/world_table.hpp>
 #include <libsly/sly2/brx/data/unk_bsp.hpp>
+#include <libsly/sly2/brx/data/world_table.hpp>
+#include <libsly/sly2/option_list.hpp>
 #include <vector>
-#include <libsly/sly2/brx/objects/object.hpp>
 
 namespace sly::sly2::brx {
 
@@ -20,9 +20,11 @@ namespace sly::sly2::brx {
 		Text text;
 		UnkBspData unkBspData;
 
-		std::unique_ptr<Object> worldObject;
-		std::unique_ptr<Object> cameraObject;
+		/// Options which are applied to the world object.
+		OptionList worldOptions;
 
+		/// Options that are applied to the camera object.
+		OptionList cameraOptions;
 	};
 
 } // namespace sly::sly2::brx
